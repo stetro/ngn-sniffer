@@ -1,0 +1,60 @@
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath 'com.android.tools.build:gradle:1.0.+'
+		classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
+	}
+}
+
+apply plugin: 'android-sdk-manager'
+apply plugin: 'com.android.application'
+apply plugin: 'idea'
+
+repositories {
+	mavenCentral()
+	maven {
+		url 'https://oss.sonatype.org/content/repositories/snapshots/'
+	}
+	jcenter()
+}
+
+dependencies {
+	// compat
+	compile 'com.android.support:appcompat-v7:21.0.+'
+	compile 'com.android.support:cardview-v7:21.0.+@aar'
+
+	// api
+	compile 'de.greenrobot:eventbus:2.4.+'
+	compile 'com.squareup.okhttp:okhttp:2.2.+'
+	compile 'com.squareup.okhttp:okhttp-urlconnection:2.2.+'
+
+	// ui
+	compile 'com.nineoldandroids:library:2.4.0+'
+	compile 'com.afollestad:material-dialogs:0.6.3.3'
+	compile 'com.github.navasmdc:MaterialDesign:1.+@aar'
+}
+
+android {
+	compileSdkVersion 21
+	buildToolsVersion '21.1.2'
+
+	defaultConfig {
+		minSdkVersion 15
+		targetSdkVersion 21
+		versionCode 1
+		versionName '0.0.1'
+		applicationId 'de.fhkoeln.ngn'
+	}
+
+	buildTypes {
+		release {
+			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+		}
+	}
+
+	lintOptions {
+		warning 'InvalidPackage'
+	}
+}
