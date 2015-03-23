@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">NGNSniffer</string>
+    <string name="wifi">Wifi</string>
+    <string name="bluetooth">Bluetooth</string>
+    <string name="gsm">GSM</string>
+    <string name="settings_text">Activate or deactivate services to scan environmental channels, accesspoints and devices.</string>
+    <string name="gps">GPS Logging</string>
 </resources>
