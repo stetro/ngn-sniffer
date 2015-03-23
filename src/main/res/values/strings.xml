@@ -6,4 +6,6 @@
     <string name="gsm">GSM</string>
     <string name="settings_text">Activate or deactivate services to scan environmental channels, accesspoints and devices.</string>
     <string name="gps">GPS Logging</string>
+    <string name="activate_wifi">Activate Wifi ...</string>
+    <string name="start_scanning">Start Scanning</string>
 </resources>
