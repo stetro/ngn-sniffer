@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resource>
-	<style name="app_theme" parent="AppTheme.Base"/>
+<resources>
 
-	<style name="AppTheme.Base" parent="Theme.AppCompat.Light">
-		
-	</style>
-</resource>
+    <style name="app_theme" parent="AppTheme.Base" />
+
+    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+</resources>

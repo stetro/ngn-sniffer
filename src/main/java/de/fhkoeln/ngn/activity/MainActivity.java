@@ -1,9 +1,18 @@
 package de.fhkoeln.ngn.activity;
 
-import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
 
-public class MainActivity extends ActionBarActivity{
+import de.fhkoeln.ngn.R;
 
+public class MainActivity extends BaseActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main_activity);
+        setTitle(R.string.app_name);
+
+    }
 }
 
 
