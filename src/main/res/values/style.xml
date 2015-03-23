@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resource>
+	<style name="app_theme" parent="AppTheme.Base"/>
+
+	<style name="AppTheme.Base" parent="Theme.AppCompat.Light">
+		
+	</style>
+</resource>
