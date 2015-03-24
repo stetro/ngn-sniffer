@@ -11,10 +11,46 @@
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
         android:background="@color/primary_dark"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:text="@string/start_scanning" />
 
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:animateLayoutChanges="true"
+        android:orientation="horizontal">
+
+        <com.gc.materialdesign.views.ProgressBarCircularIndeterminate
+            android:id="@+id/scan_fragment_wifi_progress"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/primary_dark"
+            android:visibility="gone" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/wifi"
+            android:textAppearance="@android:style/TextAppearance.Large" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginStart="10dp"
+        android:background="@color/primary_light" />
+
+
     <TextView
-        android:id="@+id/scan_fragment_scan_result"
+        android:id="@+id/scan_fragment_wifi_scan_result"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp" />

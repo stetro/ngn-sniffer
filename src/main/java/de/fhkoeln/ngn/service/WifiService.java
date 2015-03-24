@@ -1,6 +1,7 @@
 package de.fhkoeln.ngn.service;
 
 import android.app.Service;
+import android.app.usage.UsageEvents;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.wifi.WifiManager;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 
 import de.fhkoeln.ngn.R;
 import de.fhkoeln.ngn.service.event.ScanWifiEvent;
+import de.fhkoeln.ngn.service.event.ScanWifiStartedEvent;
 import de.fhkoeln.ngn.service.util.ScanWifiResultsReceiver;
 import de.greenrobot.event.EventBus;
 
@@ -40,6 +42,7 @@ public class WifiService extends Service {
     public void onEvent(ScanWifiEvent e) {
         Log.d("WifiService", "Scanning Wifis ...");
         wifiManager.startScan();
+        EventBus.getDefault().post(new ScanWifiStartedEvent());
     }
 
     @Override

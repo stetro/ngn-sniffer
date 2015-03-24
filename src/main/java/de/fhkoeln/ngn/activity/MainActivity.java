@@ -7,12 +7,15 @@ import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 
 import de.fhkoeln.ngn.R;
 import de.fhkoeln.ngn.fragment.ScanFragment;
 import de.fhkoeln.ngn.service.WifiService;
+import de.greenrobot.event.EventBus;
+import de.greenrobot.event.NoSubscriberEvent;
 
 public class MainActivity extends BaseActivity {
     private ActionBarDrawerToggle drawerToggle;
@@ -26,6 +29,7 @@ public class MainActivity extends BaseActivity {
         prepareSettingsDrawer();
         prepareContentFragment();
         startService(new Intent(this, WifiService.class));
+        EventBus.getDefault().register(this);
     }
 
     private void prepareContentFragment() {
@@ -67,6 +71,16 @@ public class MainActivity extends BaseActivity {
             return;
         }
         super.onBackPressed();
+    }
+
+    public void onEvent(NoSubscriberEvent e) {
+        Log.d("MainActivity", e.originalEvent.toString() + " is ignored");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }
 
