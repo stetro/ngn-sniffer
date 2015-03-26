@@ -33,7 +33,7 @@ public class BluetoothUtil {
     }
 
     public static String aggregateBluetoothScanResult(Context context) {
-        Collection<BluetoothDevice> deviceList = ScanBluetoothResultsReceiver.getDeviceList();
+        Collection<BluetoothDevice> deviceList = BluetoothResultsReceiver.getDeviceList();
         return listBluetoothDeviceList(context, deviceList);
     }
 

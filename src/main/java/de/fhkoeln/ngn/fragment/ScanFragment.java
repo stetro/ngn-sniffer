@@ -14,13 +14,13 @@ import com.gc.materialdesign.views.ButtonFlat;
 import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 
 import de.fhkoeln.ngn.R;
-import de.fhkoeln.ngn.service.event.ScanBluetoothEvent;
-import de.fhkoeln.ngn.service.event.ScanBluetoothResultEvent;
-import de.fhkoeln.ngn.service.event.ScanBluetoothStartedEvent;
-import de.fhkoeln.ngn.service.event.ScanBluetoothStopEvent;
-import de.fhkoeln.ngn.service.event.ScanWifiEvent;
-import de.fhkoeln.ngn.service.event.ScanWifiResultEvent;
-import de.fhkoeln.ngn.service.event.ScanWifiStartedEvent;
+import de.fhkoeln.ngn.service.event.BluetoothScanResultEvent;
+import de.fhkoeln.ngn.service.event.BluetoothScanEvent;
+import de.fhkoeln.ngn.service.event.BluetoothScanStartedEvent;
+import de.fhkoeln.ngn.service.event.BluetoothScanStopEvent;
+import de.fhkoeln.ngn.service.event.WifiScanEvent;
+import de.fhkoeln.ngn.service.event.WifiScanResultEvent;
+import de.fhkoeln.ngn.service.event.WifiScanStartedEvent;
 import de.fhkoeln.ngn.service.util.BluetoothUtil;
 import de.fhkoeln.ngn.service.util.WifiUtil;
 import de.greenrobot.event.EventBus;
@@ -66,7 +66,7 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
         bluetoothStopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EventBus.getDefault().post(new ScanBluetoothStopEvent());
+                EventBus.getDefault().post(new BluetoothScanStopEvent());
                 bluetoothStopButton.setVisibility(View.GONE);
                 bluetoothProgress.setVisibility(View.GONE);
             }
@@ -79,32 +79,32 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         wifiLayout.setVisibility(View.GONE);
         bluetoothLayout.setVisibility(View.GONE);
-        EventBus.getDefault().post(new ScanWifiEvent());
-        EventBus.getDefault().post(new ScanBluetoothEvent());
+        EventBus.getDefault().post(new WifiScanEvent());
+        EventBus.getDefault().post(new BluetoothScanEvent());
     }
 
-    public void onEvent(ScanBluetoothResultEvent e) {
+    public void onEvent(BluetoothScanResultEvent e) {
         bluetoothLayout.setVisibility(View.VISIBLE);
         bluetoothScanResult.setText(BluetoothUtil.aggregateBluetoothScanResult(getActivity()));
         bluetoothInfoResult.setText(BluetoothUtil.aggregateBluetoothInfoResult(getActivity()));
     }
 
-    public void onEvent(ScanWifiResultEvent e) {
+    public void onEvent(BluetoothScanStartedEvent e) {
+        bluetoothProgress.setVisibility(View.VISIBLE);
+        bluetoothStopButton.setVisibility(View.VISIBLE);
+        bluetoothLayout.setVisibility(View.VISIBLE);
+        bluetoothInfoResult.setText(BluetoothUtil.aggregateBluetoothInfoResult(getActivity()));
+    }
+
+    public void onEvent(WifiScanResultEvent e) {
         wifiProgress.setVisibility(View.GONE);
         wifiLayout.setVisibility(View.VISIBLE);
         wifiScanResult.setText(WifiUtil.aggregateWifiScanResult(e, getActivity()));
         wifiInfoResult.setText(WifiUtil.aggregateWifiInfoResult(getActivity()));
     }
 
-    public void onEvent(ScanWifiStartedEvent e) {
+    public void onEvent(WifiScanStartedEvent e) {
         wifiProgress.setVisibility(View.VISIBLE);
-    }
-
-    public void onEvent(ScanBluetoothStartedEvent e) {
-        bluetoothProgress.setVisibility(View.VISIBLE);
-        bluetoothStopButton.setVisibility(View.VISIBLE);
-        bluetoothLayout.setVisibility(View.VISIBLE);
-        bluetoothInfoResult.setText(BluetoothUtil.aggregateBluetoothInfoResult(getActivity()));
     }
 
     @Override

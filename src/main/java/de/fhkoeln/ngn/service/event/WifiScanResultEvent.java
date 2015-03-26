@@ -5,10 +5,10 @@ import android.net.wifi.ScanResult;
 import java.util.List;
 
 
-public class ScanWifiResultEvent {
+public class WifiScanResultEvent {
     private List<ScanResult> scanResults;
 
-    public ScanWifiResultEvent(List<ScanResult> scanResults) {
+    public WifiScanResultEvent(List<ScanResult> scanResults) {
         this.scanResults = scanResults;
     }
 

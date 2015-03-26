@@ -10,16 +10,16 @@ import android.util.Log;
 import android.widget.Toast;
 
 import de.fhkoeln.ngn.R;
-import de.fhkoeln.ngn.service.event.ScanBluetoothEvent;
-import de.fhkoeln.ngn.service.event.ScanBluetoothStartedEvent;
-import de.fhkoeln.ngn.service.event.ScanBluetoothStopEvent;
-import de.fhkoeln.ngn.service.util.ScanBluetoothResultsReceiver;
+import de.fhkoeln.ngn.service.event.BluetoothScanEvent;
+import de.fhkoeln.ngn.service.event.BluetoothScanStartedEvent;
+import de.fhkoeln.ngn.service.event.BluetoothScanStopEvent;
+import de.fhkoeln.ngn.service.util.BluetoothResultsReceiver;
 import de.greenrobot.event.EventBus;
 
 public class BluetoothService extends Service {
 
     private BluetoothAdapter bluetoothAdapter;
-    private ScanBluetoothResultsReceiver receiver;
+    private BluetoothResultsReceiver receiver;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -32,7 +32,7 @@ public class BluetoothService extends Service {
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         IntentFilter filter = new IntentFilter();
         filter.addAction(BluetoothDevice.ACTION_FOUND);
-        receiver = new ScanBluetoothResultsReceiver();
+        receiver = new BluetoothResultsReceiver();
         registerReceiver(receiver, filter);
         EventBus.getDefault().register(this);
         if (!bluetoothAdapter.isEnabled()) {
@@ -42,13 +42,13 @@ public class BluetoothService extends Service {
         Log.d("BluetoothService", "Created BluetoothService");
     }
 
-    public void onEvent(ScanBluetoothEvent e) {
+    public void onEvent(BluetoothScanEvent e) {
         Log.d("BluetoothService", "Discovering Bluethooth Devices...");
         bluetoothAdapter.startDiscovery();
-        EventBus.getDefault().post(new ScanBluetoothStartedEvent());
+        EventBus.getDefault().post(new BluetoothScanStartedEvent());
     }
 
-    public void onEvent(ScanBluetoothStopEvent e) {
+    public void onEvent(BluetoothScanStopEvent e) {
         bluetoothAdapter.cancelDiscovery();
         Log.d("BluetoothService", "Stop Bluethooth Discovering...");
     }

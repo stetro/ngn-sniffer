@@ -9,15 +9,15 @@ import android.util.Log;
 import android.widget.Toast;
 
 import de.fhkoeln.ngn.R;
-import de.fhkoeln.ngn.service.event.ScanWifiEvent;
-import de.fhkoeln.ngn.service.event.ScanWifiStartedEvent;
-import de.fhkoeln.ngn.service.util.ScanWifiResultsReceiver;
+import de.fhkoeln.ngn.service.event.WifiScanEvent;
+import de.fhkoeln.ngn.service.event.WifiScanStartedEvent;
+import de.fhkoeln.ngn.service.util.WifiResultsReceiver;
 import de.greenrobot.event.EventBus;
 
 public class WifiService extends Service {
 
     private WifiManager wifiManager;
-    private ScanWifiResultsReceiver receiver;
+    private WifiResultsReceiver receiver;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -28,7 +28,7 @@ public class WifiService extends Service {
     public void onCreate() {
         super.onCreate();
         wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
-        receiver = new ScanWifiResultsReceiver(wifiManager);
+        receiver = new WifiResultsReceiver(wifiManager);
         registerReceiver(receiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
         EventBus.getDefault().register(this);
         if (!wifiManager.isWifiEnabled()) {
@@ -38,10 +38,10 @@ public class WifiService extends Service {
         Log.d("WifiService", "Created WifiService");
     }
 
-    public void onEvent(ScanWifiEvent e) {
+    public void onEvent(WifiScanEvent e) {
         Log.d("WifiService", "Scanning Wifis ...");
         wifiManager.startScan();
-        EventBus.getDefault().post(new ScanWifiStartedEvent());
+        EventBus.getDefault().post(new WifiScanStartedEvent());
     }
 
     @Override

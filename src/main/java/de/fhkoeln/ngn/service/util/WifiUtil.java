@@ -8,7 +8,7 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 
 import de.fhkoeln.ngn.R;
-import de.fhkoeln.ngn.service.event.ScanWifiResultEvent;
+import de.fhkoeln.ngn.service.event.WifiScanResultEvent;
 
 public class WifiUtil {
     private static WifiInfo getCurrentWifiInfo(Context context) {
@@ -30,7 +30,7 @@ public class WifiUtil {
         }
     }
 
-    public static String aggregateWifiScanResult(ScanWifiResultEvent e, Context context) {
+    public static String aggregateWifiScanResult(WifiScanResultEvent e, Context context) {
         if (e.getScanResults().size() == 0) {
             return context.getString(R.string.no_wifi_hotspot_found);
         }

@@ -1,5 +1,5 @@
 package de.fhkoeln.ngn.service.event;
 
-public class ScanBluetoothResultEvent {
+public class BluetoothScanResultEvent {
 
 }

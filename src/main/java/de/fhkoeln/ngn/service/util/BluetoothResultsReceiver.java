@@ -11,10 +11,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.fhkoeln.ngn.service.event.ScanBluetoothResultEvent;
+import de.fhkoeln.ngn.service.event.BluetoothScanResultEvent;
 import de.greenrobot.event.EventBus;
 
-public class ScanBluetoothResultsReceiver extends BroadcastReceiver {
+public class BluetoothResultsReceiver extends BroadcastReceiver {
 
     private static Map<String, BluetoothDevice> deviceList = new HashMap<>();
 
@@ -22,7 +22,7 @@ public class ScanBluetoothResultsReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
         deviceList.put(device.getAddress(), device);
-        EventBus.getDefault().post(new ScanBluetoothResultEvent());
+        EventBus.getDefault().post(new BluetoothScanResultEvent());
         Log.d("ScanBTResultsReceiver", "Found Device " + device.getName());
     }
 
