@@ -8,4 +8,6 @@
     <string name="gps">GPS Logging</string>
     <string name="activate_wifi">Activate Wifi ...</string>
     <string name="start_scanning">Start Scanning</string>
+    <string name="wifi_info_title">Current Wifi Connection:</string>
+    <string name="wifi_scan_title">Available Wifi Hotspots:</string>
 </resources>

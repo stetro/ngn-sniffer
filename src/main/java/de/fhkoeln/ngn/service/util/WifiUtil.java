@@ -32,7 +32,7 @@ public class WifiUtil {
     public static String aggregateWifiScanResult(ScanWifiResultEvent e) {
         String wifiScan = "";
         for (ScanResult scanResult : e.getScanResults()) {
-            wifiScan += scanResult.BSSID + " " + scanResult.level + " " + scanResult.frequency + " " + scanResult.SSID + "\n";
+            wifiScan += String.valueOf(scanResult) + "\n";
         }
         return wifiScan;
     }

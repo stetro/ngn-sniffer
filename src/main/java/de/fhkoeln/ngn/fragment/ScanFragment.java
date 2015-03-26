@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.gc.materialdesign.views.ButtonFlat;
@@ -23,6 +24,7 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
 
     private TextView wifiScanResult;
     private TextView wifiInfoResult;
+    private LinearLayout wifiLayout;
     private ProgressBarCircularIndeterminate wifiProgress;
 
     @Override
@@ -40,11 +42,13 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
         wifiScanResult = (TextView) view.findViewById(R.id.scan_fragment_wifi_scan_result);
         wifiInfoResult = (TextView) view.findViewById(R.id.scan_fragment_wifi_info_result);
         wifiProgress = (ProgressBarCircularIndeterminate) view.findViewById(R.id.scan_fragment_wifi_progress);
+        wifiLayout = (LinearLayout) view.findViewById(R.id.scan_fragment_wifi);
         return view;
     }
 
     @Override
     public void onClick(View v) {
+        wifiLayout.setVisibility(View.GONE);
         EventBus.getDefault().post(new ScanWifiEvent());
     }
 
@@ -52,6 +56,7 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
         wifiScanResult.setText(WifiUtil.aggregateWifiScanResult(e));
         wifiInfoResult.setText(WifiUtil.aggregateWifiInfoResult(getActivity()));
         wifiProgress.setVisibility(View.GONE);
+        wifiLayout.setVisibility(View.VISIBLE);
     }
 
 

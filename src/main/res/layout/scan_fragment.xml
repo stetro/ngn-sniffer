@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:orientation="vertical">
 
     <com.gc.materialdesign.views.ButtonFlat
@@ -48,15 +49,41 @@
         android:layout_marginStart="10dp"
         android:background="@color/primary_light" />
 
-    <TextView
-        android:id="@+id/scan_fragment_wifi_info_result"
+    <LinearLayout
+        android:id="@+id/scan_fragment_wifi"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp" />
+        android:layout_margin="10dp"
+        android:orientation="vertical"
+        android:visibility="gone">
 
-    <TextView
-        android:id="@+id/scan_fragment_wifi_scan_result"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp" />
+        <TextView
+            android:id="@+id/scan_fragment_wifi_info_title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/wifi_info_title"
+            android:textAppearance="@android:style/TextAppearance.Medium" />
+
+        <TextView
+            android:id="@+id/scan_fragment_wifi_info_result"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@android:style/TextAppearance.Small" />
+
+        <TextView
+            android:id="@+id/scan_fragment_wifi_scan_title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/wifi_scan_title"
+            android:textAppearance="@android:style/TextAppearance.Medium" />
+
+        <TextView
+            android:id="@+id/scan_fragment_wifi_scan_result"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@android:style/TextAppearance.Small" />
+    </LinearLayout>
+
+
 </LinearLayout>
