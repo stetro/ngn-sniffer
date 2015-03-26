@@ -48,6 +48,11 @@
         android:layout_marginStart="10dp"
         android:background="@color/primary_light" />
 
+    <TextView
+        android:id="@+id/scan_fragment_wifi_info_result"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp" />
 
     <TextView
         android:id="@+id/scan_fragment_wifi_scan_result"
