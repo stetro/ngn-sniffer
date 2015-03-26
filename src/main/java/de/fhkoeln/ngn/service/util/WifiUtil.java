@@ -32,7 +32,7 @@ public class WifiUtil {
     public static String aggregateWifiScanResult(ScanWifiResultEvent e) {
         String wifiScan = "";
         for (ScanResult scanResult : e.getScanResults()) {
-            wifiScan += String.valueOf(scanResult) + "\n";
+            wifiScan += String.valueOf(scanResult) + "\n\n";
         }
         return wifiScan;
     }
