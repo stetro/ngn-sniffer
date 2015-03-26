@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.gc.materialdesign.views.CheckBox;
 
 import de.fhkoeln.ngn.R;
+import de.fhkoeln.ngn.service.BluetoothService;
 import de.fhkoeln.ngn.service.WifiService;
 
 public class SettingsDrawer extends Fragment {
@@ -34,6 +35,19 @@ public class SettingsDrawer extends Fragment {
             public void onCheck(boolean checked) {
                 Activity context = getActivity();
                 Intent intent = new Intent(context, WifiService.class);
+                if (checked) {
+                    context.startService(intent);
+                } else {
+                    context.stopService(intent);
+                }
+            }
+        });
+        CheckBox bluetoothCheckBox = (CheckBox) view.findViewById(R.id.switch_bluetooth);
+        bluetoothCheckBox.setOncheckListener(new CheckBox.OnCheckListener() {
+            @Override
+            public void onCheck(boolean checked) {
+                Activity context = getActivity();
+                Intent intent = new Intent(context, BluetoothService.class);
                 if (checked) {
                     context.startService(intent);
                 } else {

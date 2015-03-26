@@ -1,13 +1,8 @@
 package de.fhkoeln.ngn.service;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.wifi.ScanResult;
-import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.IBinder;
 import android.util.Log;
@@ -15,7 +10,6 @@ import android.widget.Toast;
 
 import de.fhkoeln.ngn.R;
 import de.fhkoeln.ngn.service.event.ScanWifiEvent;
-import de.fhkoeln.ngn.service.event.ScanWifiResultEvent;
 import de.fhkoeln.ngn.service.event.ScanWifiStartedEvent;
 import de.fhkoeln.ngn.service.util.ScanWifiResultsReceiver;
 import de.greenrobot.event.EventBus;

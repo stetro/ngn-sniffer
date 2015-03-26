@@ -12,4 +12,9 @@
     <string name="wifi_scan_title">Available Wifi Hotspots:</string>
     <string name="bluetooth_info_title">Current Bluetooth Connection:</string>
     <string name="bluetooth_scan_title">Availble Bluetooth Devices:</string>
+    <string name="no_wifi_connection">No Wifi Connection</string>
+    <string name="no_wifi_hotspot_found">No Wifi Hotspot found</string>
+    <string name="activate_bluetooth">Activate bluetooth ...</string>
+    <string name="bluetooth_nothing_found">No Bluetooth device found ...</string>
+    <string name="stop_scanning">Stop</string>
 </resources>

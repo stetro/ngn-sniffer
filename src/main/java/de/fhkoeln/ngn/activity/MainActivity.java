@@ -13,6 +13,7 @@ import android.view.MenuItem;
 
 import de.fhkoeln.ngn.R;
 import de.fhkoeln.ngn.fragment.ScanFragment;
+import de.fhkoeln.ngn.service.BluetoothService;
 import de.fhkoeln.ngn.service.WifiService;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.NoSubscriberEvent;
@@ -29,6 +30,7 @@ public class MainActivity extends BaseActivity {
         prepareSettingsDrawer();
         prepareContentFragment();
         startService(new Intent(this, WifiService.class));
+        startService(new Intent(this, BluetoothService.class));
         EventBus.getDefault().register(this);
     }
 

@@ -27,6 +27,24 @@
             android:text="@string/bluetooth"
             android:textAppearance="@android:style/TextAppearance.Large" />
 
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="-10dp">
+
+            <com.gc.materialdesign.views.ButtonFlat
+                android:id="@+id/scan_fragment_bluetooth_stop_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:background="@color/primary_dark"
+                android:text="@string/stop_scanning"
+                android:visibility="gone" />
+        </RelativeLayout>
+
     </LinearLayout>
 
     <View
