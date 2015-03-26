@@ -10,4 +10,6 @@
     <string name="start_scanning">Start Scanning</string>
     <string name="wifi_info_title">Current Wifi Connection:</string>
     <string name="wifi_scan_title">Available Wifi Hotspots:</string>
+    <string name="bluetooth_info_title">Current Bluetooth Connection:</string>
+    <string name="bluetooth_scan_title">Availble Bluetooth Devices:</string>
 </resources>

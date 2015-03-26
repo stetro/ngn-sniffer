@@ -59,7 +59,6 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
         wifiLayout.setVisibility(View.VISIBLE);
     }
 
-
     public void onEvent(ScanWifiStartedEvent e) {
         wifiProgress.setVisibility(View.VISIBLE);
     }
