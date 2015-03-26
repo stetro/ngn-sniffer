@@ -4,6 +4,7 @@ package de.fhkoeln.ngn.fragment;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import com.gc.materialdesign.views.CheckBox;
 
 import de.fhkoeln.ngn.R;
 import de.fhkoeln.ngn.service.BluetoothService;
+import de.fhkoeln.ngn.service.LocationService;
 import de.fhkoeln.ngn.service.WifiService;
 
 public class SettingsDrawer extends Fragment {
@@ -52,6 +54,17 @@ public class SettingsDrawer extends Fragment {
                     context.startService(intent);
                 } else {
                     context.stopService(intent);
+                }
+            }
+        });
+        CheckBox locationCheckBox =(CheckBox) view.findViewById(R.id.switch_gps);
+        locationCheckBox.setOncheckListener(new CheckBox.OnCheckListener() {
+            @Override
+            public void onCheck(boolean checked) {
+                if(checked){
+                    LocationService.setSource(LocationManager.NETWORK_PROVIDER);
+                }else{
+                    LocationService.setSource(LocationManager.GPS_PROVIDER);
                 }
             }
         });

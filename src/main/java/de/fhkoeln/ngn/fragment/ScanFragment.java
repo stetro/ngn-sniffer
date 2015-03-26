@@ -14,14 +14,17 @@ import com.gc.materialdesign.views.ButtonFlat;
 import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 
 import de.fhkoeln.ngn.R;
-import de.fhkoeln.ngn.service.event.BluetoothScanResultEvent;
 import de.fhkoeln.ngn.service.event.BluetoothScanEvent;
+import de.fhkoeln.ngn.service.event.BluetoothScanResultEvent;
 import de.fhkoeln.ngn.service.event.BluetoothScanStartedEvent;
 import de.fhkoeln.ngn.service.event.BluetoothScanStopEvent;
+import de.fhkoeln.ngn.service.event.LocationFoundEvent;
+import de.fhkoeln.ngn.service.event.LocationSearchStartedEvent;
 import de.fhkoeln.ngn.service.event.WifiScanEvent;
 import de.fhkoeln.ngn.service.event.WifiScanResultEvent;
 import de.fhkoeln.ngn.service.event.WifiScanStartedEvent;
 import de.fhkoeln.ngn.service.util.BluetoothUtil;
+import de.fhkoeln.ngn.service.util.LocationUtil;
 import de.fhkoeln.ngn.service.util.WifiUtil;
 import de.greenrobot.event.EventBus;
 
@@ -37,6 +40,9 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
     private LinearLayout bluetoothLayout;
     private ProgressBarCircularIndeterminate bluetoothProgress;
     private ButtonFlat bluetoothStopButton;
+    private TextView locationInfoResult;
+    private ProgressBarCircularIndeterminate locationProgress;
+    private LinearLayout locationLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,6 +78,10 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
             }
         });
 
+        locationInfoResult = (TextView) view.findViewById(R.id.scan_fragment_location_info_result);
+        locationProgress = (ProgressBarCircularIndeterminate) view.findViewById(R.id.scan_fragment_location_progress);
+        locationLayout = (LinearLayout) view.findViewById(R.id.scan_fragment_location);
+
         return view;
     }
 
@@ -81,6 +91,7 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
         bluetoothLayout.setVisibility(View.GONE);
         EventBus.getDefault().post(new WifiScanEvent());
         EventBus.getDefault().post(new BluetoothScanEvent());
+        EventBus.getDefault().post(new LocationSearchStartedEvent());
     }
 
     public void onEvent(BluetoothScanResultEvent e) {
@@ -105,6 +116,16 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
 
     public void onEvent(WifiScanStartedEvent e) {
         wifiProgress.setVisibility(View.VISIBLE);
+    }
+
+    public void onEvent(LocationFoundEvent e) {
+        locationProgress.setVisibility(View.GONE);
+        locationLayout.setVisibility(View.VISIBLE);
+        locationInfoResult.setText(LocationUtil.aggregateLocationInfoResult(getActivity(), e));
+    }
+
+    public void onEvent(LocationSearchStartedEvent e) {
+        locationProgress.setVisibility(View.VISIBLE);
     }
 
     @Override

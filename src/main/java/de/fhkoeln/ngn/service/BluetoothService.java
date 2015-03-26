@@ -58,6 +58,6 @@ public class BluetoothService extends Service {
         super.onDestroy();
         unregisterReceiver(receiver);
         EventBus.getDefault().unregister(this);
-
+        Log.d("BluetoothService", "Destroyed BluetoothService");
     }
 }

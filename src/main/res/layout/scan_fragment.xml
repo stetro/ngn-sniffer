@@ -24,6 +24,7 @@
 
         <include layout="@layout/scan_fragment_bluetooth" />
 
+        <include layout="@layout/scan_fragment_location" />
 
     </LinearLayout>
 

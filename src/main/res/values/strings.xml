@@ -17,4 +17,6 @@
     <string name="activate_bluetooth">Activate bluetooth ...</string>
     <string name="bluetooth_nothing_found">No Bluetooth device found ...</string>
     <string name="stop_scanning">Stop</string>
+    <string name="location">Location</string>
+    <string name="location_info_title">Your Current Location:</string>
 </resources>
