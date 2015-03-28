@@ -18,5 +18,8 @@
     <string name="bluetooth_nothing_found">No Bluetooth device found ...</string>
     <string name="stop_scanning">Stop</string>
     <string name="location">Location</string>
-    <string name="location_info_title">Your Current Location:</string>
+    <string name="location_info_title">Your Current Location:</string>"
+    <string name="gsm_info_title">Current GSM Connection:</string>
+    <string name="gsm_not_available">GSM not available</string>
+    <string name="gsm_deactivated">GSM is deactivated</string>
 </resources>

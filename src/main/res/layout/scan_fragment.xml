@@ -26,6 +26,8 @@
 
         <include layout="@layout/scan_fragment_location" />
 
+        <include layout="@layout/scan_fragment_gsm" />
+
     </LinearLayout>
 
 </ScrollView>

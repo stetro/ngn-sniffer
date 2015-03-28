@@ -32,6 +32,7 @@
         <service android:name=".service.WifiService" />
         <service android:name=".service.BluetoothService" />
         <service android:name=".service.LocationService" />
+        <service android:name=".service.GSMService"/>
 
     </application>
 </manifest>

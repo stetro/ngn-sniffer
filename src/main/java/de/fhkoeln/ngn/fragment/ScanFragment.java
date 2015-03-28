@@ -14,16 +14,21 @@ import com.gc.materialdesign.views.ButtonFlat;
 import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 
 import de.fhkoeln.ngn.R;
+import de.fhkoeln.ngn.service.GSMService;
 import de.fhkoeln.ngn.service.event.BluetoothScanEvent;
 import de.fhkoeln.ngn.service.event.BluetoothScanResultEvent;
 import de.fhkoeln.ngn.service.event.BluetoothScanStartedEvent;
 import de.fhkoeln.ngn.service.event.BluetoothScanStopEvent;
+import de.fhkoeln.ngn.service.event.GSMResultEvent;
+import de.fhkoeln.ngn.service.event.GSMScanEvent;
+import de.fhkoeln.ngn.service.event.GSMScanStartedEvent;
 import de.fhkoeln.ngn.service.event.LocationFoundEvent;
 import de.fhkoeln.ngn.service.event.LocationSearchStartedEvent;
 import de.fhkoeln.ngn.service.event.WifiScanEvent;
 import de.fhkoeln.ngn.service.event.WifiScanResultEvent;
 import de.fhkoeln.ngn.service.event.WifiScanStartedEvent;
 import de.fhkoeln.ngn.service.util.BluetoothUtil;
+import de.fhkoeln.ngn.service.util.GSMUtil;
 import de.fhkoeln.ngn.service.util.LocationUtil;
 import de.fhkoeln.ngn.service.util.WifiUtil;
 import de.greenrobot.event.EventBus;
@@ -43,6 +48,10 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
     private TextView locationInfoResult;
     private ProgressBarCircularIndeterminate locationProgress;
     private LinearLayout locationLayout;
+
+    private LinearLayout gsmLayout;
+    private TextView gsmResult;
+    private ProgressBarCircularIndeterminate gsmProgress;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -82,6 +91,10 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
         locationProgress = (ProgressBarCircularIndeterminate) view.findViewById(R.id.scan_fragment_location_progress);
         locationLayout = (LinearLayout) view.findViewById(R.id.scan_fragment_location);
 
+        gsmResult = (TextView) view.findViewById(R.id.scan_fragment_gsm_info_result);
+        gsmLayout = (LinearLayout) view.findViewById(R.id.scan_fragment_gsm);
+        gsmProgress = (ProgressBarCircularIndeterminate) view.findViewById(R.id.scan_fragment_gsm_progress);
+
         return view;
     }
 
@@ -92,6 +105,7 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
         EventBus.getDefault().post(new WifiScanEvent());
         EventBus.getDefault().post(new BluetoothScanEvent());
         EventBus.getDefault().post(new LocationSearchStartedEvent());
+        EventBus.getDefault().post(new GSMScanEvent());
     }
 
     public void onEvent(BluetoothScanResultEvent e) {
@@ -122,6 +136,15 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
         locationProgress.setVisibility(View.GONE);
         locationLayout.setVisibility(View.VISIBLE);
         locationInfoResult.setText(LocationUtil.aggregateLocationInfoResult(getActivity(), e));
+    }
+
+    public void onEvent(GSMScanStartedEvent e) {gsmProgress.setVisibility(View.VISIBLE);}
+
+    public void onEvent(GSMResultEvent e)
+    {
+        gsmProgress.setVisibility(View.GONE);
+        gsmLayout.setVisibility(View.VISIBLE);
+        gsmResult.setText(GSMUtil.getGSMInfo(e));
     }
 
     public void onEvent(LocationSearchStartedEvent e) {
