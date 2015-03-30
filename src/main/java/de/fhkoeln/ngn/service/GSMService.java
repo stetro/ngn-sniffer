@@ -2,14 +2,15 @@ package de.fhkoeln.ngn.service;
 
 import android.app.Service;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.IBinder;
+import android.telephony.CellInfo;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import java.util.List;
+
+import de.fhkoeln.ngn.service.event.GSMResultEvent;
 import de.fhkoeln.ngn.service.event.GSMScanEvent;
-import de.fhkoeln.ngn.service.event.GSMScanStartedEvent;
-import de.fhkoeln.ngn.service.util.GSMResultReceiver;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -18,7 +19,6 @@ import de.greenrobot.event.EventBus;
 public class GSMService extends Service
 {
     private TelephonyManager telephonyManager;
-    private GSMResultReceiver receiver;
 
     @Override
     public IBinder onBind(Intent intent)
@@ -31,8 +31,6 @@ public class GSMService extends Service
     {
         super.onCreate();
         telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-        receiver = new GSMResultReceiver(telephonyManager);
-        registerReceiver(receiver, new IntentFilter(TelephonyManager.EXTRA_STATE_IDLE));
         EventBus.getDefault().register(this);
 
         Log.d("GSMService", "Created GSMService");
@@ -41,14 +39,14 @@ public class GSMService extends Service
     public void onEvent(GSMScanEvent e)
     {
         Log.d("GSMService", "Scanning GSM ...");
-        EventBus.getDefault().post(new GSMScanStartedEvent());
+        EventBus.getDefault().post(new GSMResultEvent(telephonyManager));
+        Log.d("GSMService", "GSM Cell Information");
     }
 
     @Override
     public void onDestroy()
     {
         super.onDestroy();
-        unregisterReceiver(receiver);
         EventBus.getDefault().unregister(this);
         Log.d("GSMService", "Destroyed GSMService");
     }

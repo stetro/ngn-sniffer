@@ -1,6 +1,8 @@
 package de.fhkoeln.ngn.service.event;
 
 import android.telephony.CellInfo;
+import android.telephony.CellLocation;
+import android.telephony.TelephonyManager;
 
 import java.util.List;
 
@@ -9,13 +11,25 @@ import java.util.List;
  */
 public class GSMResultEvent
 {
-    private List<CellInfo> cellResults;
+    private TelephonyManager telephonyManager;
 
-    public GSMResultEvent(List<CellInfo> scanResults) {
-        this.cellResults = scanResults;
+    public GSMResultEvent(TelephonyManager telephonyManager)
+    {
+        this.telephonyManager = telephonyManager;
     }
 
-    public List<CellInfo> getResults() {
-        return cellResults;
+    public List<CellInfo> getLTECells()
+    {
+        return telephonyManager.getAllCellInfo();
+    }
+
+    public CellLocation getGSMCell()
+    {
+        return telephonyManager.getCellLocation();
+    }
+
+    public TelephonyManager getTelephonyManager()
+    {
+        return telephonyManager;
     }
 }

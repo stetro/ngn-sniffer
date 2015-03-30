@@ -50,7 +50,9 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
     private LinearLayout locationLayout;
 
     private LinearLayout gsmLayout;
-    private TextView gsmResult;
+    private TextView gsmLteResult;
+    private TextView gsmRegisteredCellInfo;
+    private TextView gsmNeighboringCellsInfo;
     private ProgressBarCircularIndeterminate gsmProgress;
 
     @Override
@@ -91,7 +93,9 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
         locationProgress = (ProgressBarCircularIndeterminate) view.findViewById(R.id.scan_fragment_location_progress);
         locationLayout = (LinearLayout) view.findViewById(R.id.scan_fragment_location);
 
-        gsmResult = (TextView) view.findViewById(R.id.scan_fragment_gsm_info_result);
+        gsmLteResult = (TextView) view.findViewById(R.id.scan_fragment_gsm_lte_info);
+        gsmRegisteredCellInfo = (TextView) view.findViewById(R.id.scan_fragment_gsm_registeredcell_info);
+        gsmNeighboringCellsInfo = (TextView) view.findViewById(R.id.scan_fragment_gsm_neighboringcells_info);
         gsmLayout = (LinearLayout) view.findViewById(R.id.scan_fragment_gsm);
         gsmProgress = (ProgressBarCircularIndeterminate) view.findViewById(R.id.scan_fragment_gsm_progress);
 
@@ -138,13 +142,18 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
         locationInfoResult.setText(LocationUtil.aggregateLocationInfoResult(getActivity(), e));
     }
 
-    public void onEvent(GSMScanStartedEvent e) {gsmProgress.setVisibility(View.VISIBLE);}
+    public void onEvent(GSMScanStartedEvent e)
+    {
+        gsmProgress.setVisibility(View.VISIBLE);
+    }
 
     public void onEvent(GSMResultEvent e)
     {
         gsmProgress.setVisibility(View.GONE);
         gsmLayout.setVisibility(View.VISIBLE);
-        gsmResult.setText(GSMUtil.getGSMInfo(e));
+        gsmLteResult.setText(GSMUtil.getLTEInfo(e));
+        gsmRegisteredCellInfo.setText(GSMUtil.getAllInfo(e));
+        gsmNeighboringCellsInfo.setText(GSMUtil.getNeighboringCellInfo(e));
     }
 
     public void onEvent(LocationSearchStartedEvent e) {
