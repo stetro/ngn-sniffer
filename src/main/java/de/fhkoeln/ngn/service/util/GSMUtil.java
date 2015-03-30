@@ -1,5 +1,6 @@
 package de.fhkoeln.ngn.service.util;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.telephony.CellInfo;
@@ -51,6 +52,7 @@ public class GSMUtil
         return sb.toString();
     }
 
+    @TargetApi(19)
     public static String getAllInfo(GSMResultEvent e)
     {
         StringBuilder sb = new StringBuilder();
