@@ -59,5 +59,10 @@ public class BluetoothService extends Service {
         unregisterReceiver(receiver);
         EventBus.getDefault().unregister(this);
         Log.d("BluetoothService", "Destroyed BluetoothService");
+        if(bluetoothAdapter.isEnabled())
+        {
+            bluetoothAdapter.disable();
+            Toast.makeText(this, getString(R.string.deactivate_bluetooth), Toast.LENGTH_LONG).show();
+        }
     }
 }

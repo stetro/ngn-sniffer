@@ -87,6 +87,10 @@ public class MainActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        stopService(new Intent(this, WifiService.class));
+        stopService(new Intent(this, BluetoothService.class));
+        stopService(new Intent(this, LocationService.class));
+        stopService(new Intent(this, GSMService.class));
     }
 }
 
