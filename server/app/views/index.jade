@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  div.row(ng-controller='MapController')
+    .col-md-3
+      .panel.panel-info
+        .panel-heading Configurations
+        .panel-body
+          ul.list.list-unstyled
+            li(id='search')
+              input(type="text", class='form-control', placeholder='Location ...')
+              i.glyphicon.glyphicon-search(id='search-icon')
+            li.checkbox
+              label
+                input(type="checkbox") 
+                | Wifis
+            li.checkbox
+              label
+                input(type="checkbox")
+                | GSM Signal
+    .col-md-9
+      .well
+        leaflet(layers='layers', center='center', width='100%', height='600')
+      .well
+        pre(ng-bind='layers | json')
+        
+

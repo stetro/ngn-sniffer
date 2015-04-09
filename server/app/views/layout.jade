@@ -1,0 +1,32 @@
+doctype html
+html(lang='en', ng-app='ngn')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width')
+    title= title
+    block css
+      link(rel='stylesheet', href='/components/leaflet/dist/leaflet.css')
+      link(rel='stylesheet', href='/css/style.css')
+    block js
+      script(src='components/jquery/dist/jquery.min.js')
+      script(src='components/bootstrap/dist/js/bootstrap.min.js')
+      script(src='components/leaflet/dist/leaflet.js')
+      script(src='components/webgl-heatmap-leaflet/js/webgl-heatmap.js')
+      script(src='components/webgl-heatmap-leaflet/js/webgl-heatmap-leaflet.js')
+      script(src='components/angular/angular.min.js')
+      script(src='components/angular-resource/angular-resource.min.js')
+      script(src='components/angular-leaflet-directive/dist/angular-leaflet-directive.min.js')
+      script(src='js/app.js')
+      if ENV_DEVELOPMENT
+        script(src='http://localhost:35729/livereload.js')
+  body
+    nav.navbar.navbar-default
+      .container
+        .navbar-header
+          a.navbar-brand(href='#') NGN-Sniffer
+        ul.nav.navbar-nav
+          li.active
+            a(href="#", target="_blank") Map
+
+    .container
+      block content
