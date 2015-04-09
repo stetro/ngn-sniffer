@@ -2,20 +2,19 @@
 
 var application = angular.module('ngn', ['ngResource', 'leaflet-directive']);
 
-application.controller('MapController', function($scope) {
-  var dataPoints = [
-    [51.505, -0.09, 0.5],
-    [51.505, -0.091, 0.5],
-    [51.505, -0.092, 0.5],
-    [51.515, -0.092, 0.5],
-    [51.525, -0.092, 0.5],
-    [51.535, -0.092, 0.5]
-  ];
+application.controller('MapController', function($scope, $http) {
+  var dataPoints = [];
   angular.extend($scope, {
     center: {
       lat: 51.505,
       lng: -0.09,
       zoom: 15
+    },
+    events: {
+      map: {
+        enable: ['moveend'],
+        logic: 'emit'
+      }
     },
     layers: {
       baselayers: {
@@ -38,4 +37,19 @@ application.controller('MapController', function($scope) {
       }
     }
   });
+
+  $scope.reloadData = function() {
+    $http.get('/wifi/').success(function(data) {
+      $scope.layers.overlays.heatmap.data = data;
+    });
+  };
+
+
+
+  $scope.$on('leafletDirectiveMap.moveend', function(event) {
+    $scope.reloadData();
+  });
+
+
+  $scope.reloadData();
 });
