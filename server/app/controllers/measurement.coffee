@@ -6,7 +6,6 @@ Measurement  = mongoose.model 'Measurement'
 module.exports = (app) ->
   app.use '/measurement/', router
 
-
 router.post '/', (req,res,next) ->
   measurement = new Measurement(
     signalDBm: req.body.signalDBm

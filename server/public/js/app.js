@@ -12,7 +12,7 @@ application.controller('MapController', function($scope, $http) {
     },
     events: {
       map: {
-        enable: ['moveend'],
+        enable: ['moveend', 'click'],
         logic: 'emit'
       }
     },
@@ -31,24 +31,39 @@ application.controller('MapController', function($scope, $http) {
           url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
           type: 'xyz'
         }
-      },
-      overlays: {
-        heatmap: {
-          name: 'Heat Map',
-          type: 'heatmap',
-          data: dataPoints,
-          visible: true,
-          layerOptions: {
-            size: 200
-          }
-        }
       }
     }
   });
 
+
+
+  $scope.layers.overlays = {
+    wifiAPs: {
+      name: 'Wifi APs',
+      type: 'heatmap',
+      data: dataPoints,
+      visible: true,
+      layerOptions: {
+        size: 140
+      }
+    },
+    signalDBm: {
+      name: 'Mobile Connectivity',
+      type: 'heatmap',
+      data: dataPoints,
+      visible: true,
+      layerOptions: {
+        size: 200
+      }
+    }
+  };
+
   var reloadData = function() {
     $http.get('/wifi/').success(function(data) {
-      $scope.layers.overlays.heatmap.data = data;
+      $scope.layers.overlays.wifiAPs.data = data;
+    });
+    $http.get('/signal/').success(function(data) {
+      $scope.layers.overlays.signalDBm.data = data;
     });
   };
 
@@ -84,6 +99,10 @@ application.controller('MapController', function($scope, $http) {
 
   $scope.$on('leafletDirectiveMap.moveend', function(event) {
     reloadData();
+  });
+  $scope.$on('leafletDirectiveMap.click', function(event, e) {
+    $scope.markers.measurementMarker.lat = e.leafletEvent.latlng.lat;
+    $scope.markers.measurementMarker.lng = e.leafletEvent.latlng.lng;
   });
 
   reloadData();

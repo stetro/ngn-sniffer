@@ -3,22 +3,6 @@ extends layout
 block content
   div.row(ng-controller='MapController')
     .col-md-3
-      .panel.panel-info
-        .panel-heading Configurations
-        .panel-body
-          ul.list.list-unstyled
-            li(id='search')
-              input(type='text', class='form-control', placeholder='Location ...')
-              i.glyphicon.glyphicon-search(id='search-icon')
-            li.checkbox
-              label
-                input(type='checkbox') 
-                | Wifis
-            li.checkbox
-              label
-                input(type='checkbox')
-                | GSM Signal
-
       .panel.panel-success
         .panel-heading Add Measurement
         .panel-body
@@ -36,7 +20,12 @@ block content
             button.btn.btn-default.pull-left(ng-click='updateMarkerPosition()', type='button', value='Update Position') 
               | Update Position &nbsp;
               i.glyphicon.glyphicon-map-marker
-            
+      .panel.panel-info
+        .panel-heading Settings
+        .panel-body
+          .form-group
+            input(type='range', min='100', max='1000', ng-model='layers.overlays.wifiAPs.layerOptions.size')
+            {{layers.overlays.wifiAPs.layerOptions.size}}
 
     .col-md-9
       .well
