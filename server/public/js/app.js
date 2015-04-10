@@ -16,6 +16,14 @@ application.controller('MapController', function($scope, $http) {
         logic: 'emit'
       }
     },
+    markers: {
+      measurementMarker: {
+        lat: 51,
+        lng: 0,
+        focus: true,
+        draggable: true
+      }
+    },
     layers: {
       baselayers: {
         osm: {
@@ -38,18 +46,47 @@ application.controller('MapController', function($scope, $http) {
     }
   });
 
-  $scope.reloadData = function() {
+  var reloadData = function() {
     $http.get('/wifi/').success(function(data) {
       $scope.layers.overlays.heatmap.data = data;
     });
   };
 
+  var getLocation = function() {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      $scope.$apply(function() {
+        $scope.center.lat = position.coords.latitude;
+        $scope.center.lng = position.coords.longitude;
+      });
+    });
+  };
 
+  $scope.updateMarkerPosition = function() {
+    $scope.markers.measurementMarker.lat = $scope.center.lat;
+    $scope.markers.measurementMarker.lng = $scope.center.lng;
+  };
+
+  $scope.saveMeasurement = function() {
+    $http.post('/measurement/', {
+      lat: $scope.markers.measurementMarker.lat,
+      lng: $scope.markers.measurementMarker.lng,
+      signalDBm: $scope.signalDBm,
+      wifiAPs: $scope.wifiAPs
+    }).success(function() {
+      $scope.failure = false;
+      reloadData();
+      $scope.signalDBm = undefined;
+      $scope.wifiAPs = undefined;
+    }).error(function() {
+      $scope.failure = true;
+    });
+  };
 
   $scope.$on('leafletDirectiveMap.moveend', function(event) {
-    $scope.reloadData();
+    reloadData();
   });
 
+  reloadData();
+  getLocation();
 
-  $scope.reloadData();
 });

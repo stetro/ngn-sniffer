@@ -18,9 +18,27 @@ block content
               label
                 input(type='checkbox')
                 | GSM Signal
+
+      .panel.panel-success
+        .panel-heading Add Measurement
+        .panel-body
+          .alert.alert-warning(ng-show='failure')
+            | Could not save
+            button.close(ng-click='failure=false') &times;
+          form(name='measurement', novalidate)
+            .form-group
+              label(for='signal') Signal dBm
+              input.form-control(type='number', name='signal', placeholder='Signal dBm', required='required', ng-model='signalDBm')
+            .form-group
+              label(for='wifis') Wifi APs
+              input.form-control(type='number', name='wifis', placeholder='Wifi APs', required='required', ng-model='wifiAPs')
+            input.btn.btn-info.pull-right(type='submit', ng-click='saveMeasurement()', value='Save', ng-disabled='!measurement.$valid')
+            button.btn.btn-default.pull-left(ng-click='updateMarkerPosition()', type='button', value='Update Position') 
+              | Update Position &nbsp;
+              i.glyphicon.glyphicon-map-marker
+            
+
     .col-md-9
       .well
-        leaflet(layers='layers', center='center', width='100%', height='600', event-broadcast='events', url-hash-center='yes')
-      .well
-        pre(ng-bind='layers | json')
+        leaflet(layers='layers', center='center', width='100%', height='600', event-broadcast='events',  markers='markers')
 
