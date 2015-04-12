@@ -1,6 +1,6 @@
 'use strict';
 
-var application = angular.module('ngn', ['ngResource', 'leaflet-directive']);
+var application = angular.module('ngn', ['leaflet-directive']);
 
 application.controller('MapController', function($scope, $http) {
   var dataPoints = [];
