@@ -7,9 +7,18 @@ module.exports = (app) ->
   app.use '/signal/', router
 
 
-router.get '/', (req, res, next) ->
-  Measurement.find (err, data)->
-    points = []
+router.post '/', (req, res, next) ->
+  points = []
+  if req.body.northEast is undefined or req.body.southWest is undefined
+    return points
+  Measurement.find
+    location:
+      $geoWithin:
+        $box: [
+          [ req.body.northEast.lat, req.body.northEast.lng ]
+          [ req.body.southWest.lat, req.body.southWest.lng ]
+        ]
+  , (err, data)->
     for point in data
       points.push([point.location[0], point.location[1], 0.1])
     res.json(points)

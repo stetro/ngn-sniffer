@@ -5,6 +5,7 @@ var application = angular.module('ngn', ['leaflet-directive']);
 application.controller('MapController', function($scope, $http) {
   var dataPoints = [];
   angular.extend($scope, {
+    bounds: [],
     center: {
       lat: 51.505,
       lng: -0.09,
@@ -59,10 +60,10 @@ application.controller('MapController', function($scope, $http) {
   };
 
   var reloadData = function() {
-    $http.get('/wifi/').success(function(data) {
+    $http.post('/wifi/',$scope.bounds).success(function(data) {
       $scope.layers.overlays.wifiAPs.data = data;
     });
-    $http.get('/signal/').success(function(data) {
+    $http.post('/signal/', $scope.bounds).success(function(data) {
       $scope.layers.overlays.signalDBm.data = data;
     });
   };
@@ -97,9 +98,10 @@ application.controller('MapController', function($scope, $http) {
     });
   };
 
-  $scope.$on('leafletDirectiveMap.moveend', function(event) {
+  $scope.$on('leafletDirectiveMap.moveend', function(event, data) {
     reloadData();
   });
+
   $scope.$on('leafletDirectiveMap.click', function(event, e) {
     $scope.markers.measurementMarker.lat = e.leafletEvent.latlng.lat;
     $scope.markers.measurementMarker.lng = e.leafletEvent.latlng.lng;
