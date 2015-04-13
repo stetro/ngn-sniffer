@@ -10,7 +10,9 @@ router.post '/', (req,res,next) ->
   measurement = new Measurement(
     signalDBm: req.body.signalDBm
     wifiAPs: req.body.wifiAPs
-    location: [req.body.lat, req.body.lng]
+    location: 
+      type: 'Point'
+      coordinates: [req.body.lat, req.body.lng]
   )
   measurement.save (err) ->
     res.end()
