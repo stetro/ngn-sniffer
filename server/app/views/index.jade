@@ -9,14 +9,17 @@ block content
           .alert.alert-warning(ng-show='failure')
             | Could not save
             button.close(ng-click='failure=false') &times;
-          form(name='measurement', novalidate)
+          form(name='measurementForm', novalidate)
             .form-group
-              label(for='signal') Signal dBm
-              input.form-control(type='number', name='signal', placeholder='Signal dBm', required='required', ng-model='signalDBm')
+              label(for='type') Network type
+              select(ng-options='type for type in types', ng-model='measurement.type', class='form-control')
             .form-group
-              label(for='wifis') Wifi APs
-              input.form-control(type='number', name='wifis', placeholder='Wifi APs', required='required', ng-model='wifiAPs')
-            input.btn.btn-info.pull-right(type='submit', ng-click='saveMeasurement()', value='Save', ng-disabled='!measurement.$valid')
+              label(for='signal') Signal dBm {{measurement.signalDBm * 2 -113}} dBm
+              input.form-control(type='range', min='0', max='31', name='signal', placeholder='Signal dBm', required='required', ng-model='measurement.signalDBm')
+            .form-group
+              label(for='wifis') Wifi APs {{measurement.wifiAPs}}
+              input.form-control(type='range', name='wifis', min='0', max='100', placeholder='Wifi APs', required='required', ng-model='measurement.wifiAPs')
+            input.btn.btn-info.pull-right(type='submit', ng-click='saveMeasurement()', value='Save', ng-disabled='!measurementForm.$valid')
             button.btn.btn-default.pull-left(ng-click='updateMarkerPosition()', type='button', value='Update Position') 
               | Update Position &nbsp;
               i.glyphicon.glyphicon-map-marker

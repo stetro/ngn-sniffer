@@ -20,6 +20,6 @@ router.post '/', (req, res, next) ->
         ]
   , (err, data)->
     for point in data
-      points.push([point.location.coordinates[0], point.location.coordinates[1], 0.1])
+      points.push([point.location.coordinates[0], point.location.coordinates[1],  parseFloat(point.signalDBm) / 31.0])
     res.json(points)
     

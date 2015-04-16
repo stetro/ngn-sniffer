@@ -4,6 +4,7 @@ Schema   = mongoose.Schema
 MeasurementSchema = new Schema(
   signalDBm: Number
   wifiAPs: Number
+  type: String
   location:
     type:
       type: String

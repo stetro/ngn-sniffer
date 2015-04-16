@@ -5,6 +5,12 @@ var application = angular.module('ngn', ['leaflet-directive']);
 application.controller('MapController', function($scope, $http) {
   var dataPoints = [];
   angular.extend($scope, {
+    measurement: {
+      type: 'EDGE',
+      signalDBm: 15,
+      wifiAPs: 1
+    },
+    types: ['CDMA', 'EDGE', 'GSM', 'LTE'],
     bounds: {
       northEast: {
         lat: 50.9412313855822,
@@ -59,7 +65,7 @@ application.controller('MapController', function($scope, $http) {
       data: dataPoints,
       visible: true,
       layerOptions: {
-        size: 140
+        size: 200
       }
     },
     signalDBm: {
@@ -97,16 +103,14 @@ application.controller('MapController', function($scope, $http) {
   };
 
   $scope.saveMeasurement = function() {
-    $http.post('/measurement/', {
+    var measurement = {
       lat: $scope.markers.measurementMarker.lat,
-      lng: $scope.markers.measurementMarker.lng,
-      signalDBm: $scope.signalDBm,
-      wifiAPs: $scope.wifiAPs
-    }).success(function() {
+      lng: $scope.markers.measurementMarker.lng
+    };
+    angular.extend(measurement, $scope.measurement);
+    $http.post('/measurement/', measurement).success(function() {
       $scope.failure = false;
       reloadData();
-      $scope.signalDBm = undefined;
-      $scope.wifiAPs = undefined;
     }).error(function() {
       $scope.failure = true;
     });

@@ -7,15 +7,43 @@ module.exports = (app) ->
   app.use '/measurement/', router
 
 router.post '/', (req,res,next) ->
-  measurement = new Measurement(
-    signalDBm: req.body.signalDBm
-    wifiAPs: req.body.wifiAPs
-    location: 
-      type: 'Point'
-      coordinates: [req.body.lat, req.body.lng]
-  )
-  measurement.save (err) ->
-    res.end()
+  Measurement.find
+    location:
+      $geoNear: 
+        spherical: true
+        limit: 1
+        $geometry: 
+          type: 'Point' 
+          coordinates: [req.body.lat, req.body.lng]
+        $maxDistance: 100
+  , (err, measurements)->
+    if err
+      console.log(err)
+      res.status(500).end()
+      return
+    measurement = {}
+    if measurements.length == 0
+      console.log('Adding new measurement entry.')
+      measurement = new Measurement(
+        type: req.body.type
+        signalDBm: req.body.signalDBm
+        wifiAPs: req.body.wifiAPs
+        location: 
+          type: 'Point'
+          coordinates: [req.body.lat, req.body.lng]
+      )
+    else
+      console.log('Replacing available measurement entry.')
+      measurement = measurements[0]
+      measurement.signalDBm = req.body.signalDBm
+      measurement.wifiAPs = req.body.wifiAPs
+      measurement.type = req.body.type
+
+    measurement.save (err) ->
+      if err
+        res.status(500).end()
+      else
+        res.end()
     
 router.get '/', (req, res, next) ->
   Measurement.find (err, measurements) ->
