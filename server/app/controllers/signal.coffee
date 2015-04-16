@@ -15,8 +15,8 @@ router.post '/', (req, res, next) ->
     location:
       $geoWithin:
         $box: [
-          [ req.body.northEast.lat, req.body.northEast.lng ]
           [ req.body.southWest.lat, req.body.southWest.lng ]
+          [ req.body.northEast.lat, req.body.northEast.lng ]
         ]
   , (err, data)->
     for point in data
