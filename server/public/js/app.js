@@ -125,6 +125,22 @@ application.controller('MapController', function($scope, $http) {
     $scope.markers.measurementMarker.lng = e.leafletEvent.latlng.lng;
   });
 
+  $scope.lookUpAddress = function() {
+    delete $http.defaults.headers.common['X-Requested-With'];
+    $http
+      .get('http://maps.google.com/maps/api/geocode/json?sensor=true&address=' + $scope.search)
+      .success(function(data) {
+        if (data.results.length > 0) {
+          $scope.center = {
+            lat: data.results[0].geometry.location.lat,
+            lng: data.results[0].geometry.location.lng,
+            zoom: 15
+          };
+          $scope.search = '';
+        }
+      });
+  };
+
   reloadData();
   getLocation();
 

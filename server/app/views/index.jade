@@ -26,9 +26,10 @@ block content
       .panel.panel-info
         .panel-heading Settings
         .panel-body
-          .form-group
-            input(type='range', min='100', max='1000', ng-model='layers.overlays.wifiAPs.layerOptions.size')
-            {{layers.overlays.wifiAPs.layerOptions.size}}
+          form(ng-submit='lookUpAddress()')
+            .form-group(id='search')
+              input.form-control(type='text', ng-model='search', placeholder='Search Location ...')
+              i.glyphicon.glyphicon-search(id='search-icon')
 
     .col-md-9
       .well
