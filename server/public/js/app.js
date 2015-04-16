@@ -63,9 +63,9 @@ application.controller('MapController', function($scope, $http) {
       name: 'Wifi APs',
       type: 'heatmap',
       data: dataPoints,
-      visible: true,
+      visible: false,
       layerOptions: {
-        size: 200
+        size: 250
       }
     },
     signalDBm: {
@@ -74,7 +74,7 @@ application.controller('MapController', function($scope, $http) {
       data: dataPoints,
       visible: true,
       layerOptions: {
-        size: 200
+        size: 250
       }
     }
   };
