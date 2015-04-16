@@ -16,8 +16,8 @@ application.controller('MapController', function($scope, $http) {
       }
     },
     center: {
-      lat: 51.505,
-      lng: -0.09,
+      lat: 50.93371318638334,
+      lng: 6.986961364746094,
       zoom: 15
     },
     events: {
@@ -36,9 +36,14 @@ application.controller('MapController', function($scope, $http) {
     },
     layers: {
       baselayers: {
-        googleTerrain: {
-          name: 'Google Terrain',
-          layerType: 'TERRAIN',
+        osm: {
+          name: 'OpenStreetMap',
+          url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          type: 'xyz'
+        },
+        googleRoadmap: {
+          name: 'Google Maps',
+          layerType: 'ROADMAP',
           type: 'google'
         }
       }
