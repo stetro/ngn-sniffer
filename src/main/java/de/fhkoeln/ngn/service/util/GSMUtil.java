@@ -4,8 +4,13 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.telephony.CellInfo;
+import android.telephony.CellLocation;
 import android.telephony.NeighboringCellInfo;
+import android.telephony.PhoneStateListener;
+import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
+
+import com.squareup.okhttp.internal.Platform;
 
 import java.util.List;
 
@@ -235,6 +240,30 @@ public class GSMUtil
               .append("MMS User Agent: ").append(tm.getMmsUserAgent()).append("\n");
         }
 
+        tm.listen(new MyPhoneStateListener(), PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
+
+        sb.append("GSM signal strength: ").append( (signalStrengthDbm<=0)? -113 :signalStrengthDbm*2 - 113).append(" dBm\n");
+
         return sb.toString();
     }
+
+    public static void getCellLocation(GSMResultEvent e)
+    {
+        TelephonyManager tm = e.getTelephonyManager();
+        CellLocation cellLocation = tm.getCellLocation();
+    }
+
+    private static int signalStrengthDbm;
+
+    private static class MyPhoneStateListener extends PhoneStateListener
+    {
+        /* Get the Signal strength from the provider, each tiome there is an update */
+        @Override
+        public void onSignalStrengthsChanged(SignalStrength signalStrength)
+        {
+            super.onSignalStrengthsChanged(signalStrength);
+            signalStrengthDbm = signalStrength.getGsmSignalStrength();
+        }
+
+    };/* End of private Class */
 }
