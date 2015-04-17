@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
@@ -30,6 +31,10 @@ public class BluetoothService extends Service {
     public void onCreate() {
         super.onCreate();
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        SharedPreferences settings = getSharedPreferences("settings", 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean("bluetoothEnabled", bluetoothAdapter.isEnabled());
+        editor.apply();
         IntentFilter filter = new IntentFilter();
         filter.addAction(BluetoothDevice.ACTION_FOUND);
         receiver = new BluetoothResultsReceiver();
@@ -59,7 +64,8 @@ public class BluetoothService extends Service {
         unregisterReceiver(receiver);
         EventBus.getDefault().unregister(this);
         Log.d("BluetoothService", "Destroyed BluetoothService");
-        if(bluetoothAdapter.isEnabled())
+
+        if(getSharedPreferences("settings", 0).getBoolean("bluetoothEnabled", false))
         {
             bluetoothAdapter.disable();
             Toast.makeText(this, getString(R.string.deactivate_bluetooth), Toast.LENGTH_LONG).show();
