@@ -80,10 +80,10 @@ application.controller('MapController', function($scope, $http) {
   };
 
   var reloadData = function() {
-    $http.post('/wifi/', $scope.bounds).success(function(data) {
+    $http.post('/measurement/wifi/', $scope.bounds).success(function(data) {
       $scope.layers.overlays.wifiAPs.data = data;
     });
-    $http.post('/signal/', $scope.bounds).success(function(data) {
+    $http.post('/measurement/signal/', $scope.bounds).success(function(data) {
       $scope.layers.overlays.signalDBm.data = data;
     });
   };

@@ -45,6 +45,37 @@ router.post '/', (req,res,next) ->
       else
         res.end()
     
-router.get '/', (req, res, next) ->
-  Measurement.find (err, measurements) ->
-    res.json(measurements)
+
+router.post '/wifi', (req, res, next) ->
+  points = []
+  if req.body.northEast is undefined or req.body.southWest is undefined
+    return points
+  Measurement.find(
+    location:
+      $geoWithin:
+        $box: [
+          [ req.body.southWest.lat, req.body.southWest.lng ]
+          [ req.body.northEast.lat, req.body.northEast.lng ]
+        ]
+  , (err, data)->
+    for point in data
+
+      points.push([point.location.coordinates[0], point.location.coordinates[1], 0.5])
+    res.json(points)
+  )
+
+router.post '/signal', (req, res, next) ->
+  points = []
+  if req.body.northEast is undefined or req.body.southWest is undefined
+    return points
+  Measurement.find
+    location:
+      $geoWithin:
+        $box: [
+          [ req.body.southWest.lat, req.body.southWest.lng ]
+          [ req.body.northEast.lat, req.body.northEast.lng ]
+        ]
+  , (err, data)->
+    for point in data
+      points.push([point.location.coordinates[0], point.location.coordinates[1],  parseFloat(point.signalDBm) / 31.0])
+    res.json(points)
