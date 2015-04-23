@@ -19,7 +19,7 @@ To run the server you need the following things:
 #### API Reference
 
 | Endpoint | Action | Parameter | Answere | Description | 
----------------------------------------------------------
+|----------|--------|-----------|---------|-------------|
 | `http://host/measurement` | POST | lat:double, lng:double, type:varchar, signalDBm:int, wifiAPs:int | JSON Array | Save measurement|
 | `http://host/measurement/signal` | POST | netlat:double, netlng:double, swlat:double, swlng:double | JSON Array | Load weighted heatmap points for signal strength |
 | `http://host/measurement/wifi` | POST | netlat:double, netlng:double, swlat:double, swlng:double | JSON Array | Load weighted heatmap points for wifi access points |
