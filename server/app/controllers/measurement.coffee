@@ -68,7 +68,6 @@ router.get '/wifi', (req, res, next) ->
 
 router.get '/signal', (req, res, next) ->
   points = []
-  console.log(req.query)
   if req.query.nelat is undefined or req.query.swlat is undefined or req.query.nelng is undefined or req.query.swlng is undefined
     res.json(points)
   Measurement.find

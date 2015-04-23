@@ -1,8 +1,23 @@
 'use strict';
 
-var application = angular.module('ngn', ['leaflet-directive']);
+var application = angular.module('ngn', ['leaflet-directive', 'ngResource']);
 
-application.controller('MapController', function($scope, $http) {
+application.factory('Measurement', function($resource) {
+  return $resource('/measurement', {}, {
+    getWifiPoints: {
+      url: '/measurement/wifi',
+      method: 'GET',
+      isArray: true
+    },
+    getSignalPoints: {
+      url: '/measurement/signal',
+      method: 'GET',
+      isArray: true
+    }
+  });
+});
+
+application.controller('MapController', function($scope, $http, Measurement) {
   var dataPoints = [];
   angular.extend($scope, {
     measurement: {
@@ -77,24 +92,20 @@ application.controller('MapController', function($scope, $http) {
   };
 
   var reloadData = function() {
-    $http.get('/measurement/wifi/', {
-      params: {
-        'nelat': $scope.bounds.northEast.lat,
-        'nelng': $scope.bounds.northEast.lng,
-        'swlat': $scope.bounds.southWest.lat,
-        'swlng': $scope.bounds.southWest.lng
-      }
-    }).success(function(data) {
+    Measurement.getWifiPoints({
+      'nelat': $scope.bounds.northEast.lat,
+      'nelng': $scope.bounds.northEast.lng,
+      'swlat': $scope.bounds.southWest.lat,
+      'swlng': $scope.bounds.southWest.lng
+    }, function(data) {
       $scope.layers.overlays.wifiAPs.data = data;
     });
-    $http.get('/measurement/signal/', {
-      params: {
-        'nelat': $scope.bounds.northEast.lat,
-        'nelng': $scope.bounds.northEast.lng,
-        'swlat': $scope.bounds.southWest.lat,
-        'swlng': $scope.bounds.southWest.lng
-      }
-    }).success(function(data) {
+    Measurement.getSignalPoints({
+      'nelat': $scope.bounds.northEast.lat,
+      'nelng': $scope.bounds.northEast.lng,
+      'swlat': $scope.bounds.southWest.lat,
+      'swlng': $scope.bounds.southWest.lng
+    }, function(data) {
       $scope.layers.overlays.signalDBm.data = data;
     });
   };
@@ -119,10 +130,11 @@ application.controller('MapController', function($scope, $http) {
       lng: $scope.markers.measurementMarker.lng
     };
     angular.extend(measurement, $scope.measurement);
-    $http.post('/measurement/', measurement).success(function() {
+    var newMeasurement = new Measurement(measurement);
+    newMeasurement.$save(function() {
       $scope.failure = false;
       reloadData();
-    }).error(function() {
+    }, function() {
       $scope.failure = true;
     });
   };
