@@ -46,36 +46,42 @@ router.post '/', (req,res,next) ->
         res.end()
     
 
-router.post '/wifi', (req, res, next) ->
+router.get '/wifi', (req, res, next) ->
   points = []
-  if req.body.northEast is undefined or req.body.southWest is undefined
-    return points
+  if req.query.nelat is undefined or req.query.swlat is undefined or req.query.nelng is undefined or req.query.swlng is undefined
+    res.json(points)
   Measurement.find(
     location:
       $geoWithin:
         $box: [
-          [ req.body.southWest.lat, req.body.southWest.lng ]
-          [ req.body.northEast.lat, req.body.northEast.lng ]
+          [ parseFloat(req.query.swlat), parseFloat(req.query.swlng) ]
+          [ parseFloat(req.query.nelat), parseFloat(req.query.nelng) ]
         ]
   , (err, data)->
+    if err
+      res.status(500)
+      return
     for point in data
-
       points.push([point.location.coordinates[0], point.location.coordinates[1], 0.5])
     res.json(points)
   )
 
-router.post '/signal', (req, res, next) ->
+router.get '/signal', (req, res, next) ->
   points = []
-  if req.body.northEast is undefined or req.body.southWest is undefined
-    return points
+  console.log(req.query)
+  if req.query.nelat is undefined or req.query.swlat is undefined or req.query.nelng is undefined or req.query.swlng is undefined
+    res.json(points)
   Measurement.find
     location:
       $geoWithin:
         $box: [
-          [ req.body.southWest.lat, req.body.southWest.lng ]
-          [ req.body.northEast.lat, req.body.northEast.lng ]
+          [ parseFloat(req.query.swlat), parseFloat(req.query.swlng) ]
+          [ parseFloat(req.query.nelat), parseFloat(req.query.nelng) ]
         ]
   , (err, data)->
+    if err
+      res.status(500)
+      return
     for point in data
       points.push([point.location.coordinates[0], point.location.coordinates[1],  parseFloat(point.signalDBm) / 31.0])
     res.json(points)

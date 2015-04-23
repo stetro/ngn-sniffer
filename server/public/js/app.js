@@ -55,9 +55,6 @@ application.controller('MapController', function($scope, $http) {
       }
     }
   });
-
-
-
   $scope.layers.overlays = {
     wifiAPs: {
       name: 'Wifi APs',
@@ -80,10 +77,24 @@ application.controller('MapController', function($scope, $http) {
   };
 
   var reloadData = function() {
-    $http.post('/measurement/wifi/', $scope.bounds).success(function(data) {
+    $http.get('/measurement/wifi/', {
+      params: {
+        'nelat': $scope.bounds.northEast.lat,
+        'nelng': $scope.bounds.northEast.lng,
+        'swlat': $scope.bounds.southWest.lat,
+        'swlng': $scope.bounds.southWest.lng
+      }
+    }).success(function(data) {
       $scope.layers.overlays.wifiAPs.data = data;
     });
-    $http.post('/measurement/signal/', $scope.bounds).success(function(data) {
+    $http.get('/measurement/signal/', {
+      params: {
+        'nelat': $scope.bounds.northEast.lat,
+        'nelng': $scope.bounds.northEast.lng,
+        'swlat': $scope.bounds.southWest.lat,
+        'swlng': $scope.bounds.southWest.lng
+      }
+    }).success(function(data) {
       $scope.layers.overlays.signalDBm.data = data;
     });
   };
