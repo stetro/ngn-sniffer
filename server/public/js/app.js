@@ -61,7 +61,7 @@ application.controller('MapController', function($scope, $http, Measurement) {
           //name: 'OpenStreetMap',
           name: 'Stamen Toner Lite',
           //url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-          url: 'http://a.tile.stamen.com/toner-labels/{z}/{x}/{y}.png',
+          url: 'http://a.tile.stamen.com/toner-lite/{z}/{x}/{y}.png',
           type: 'xyz'
         },
         googleRoadmap: {
