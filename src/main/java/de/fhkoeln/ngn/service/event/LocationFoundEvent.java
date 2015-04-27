@@ -1,6 +1,7 @@
 package de.fhkoeln.ngn.service.event;
 
 import android.location.Location;
+import android.util.Log;
 
 
 public class LocationFoundEvent {
@@ -8,6 +9,7 @@ public class LocationFoundEvent {
 
     public LocationFoundEvent(Location location) {
         this.location = location;
+        //Log.d("LocationFoundEvent", "LocationFoundEvent was fired.");
     }
 
     public Location getLocation() {

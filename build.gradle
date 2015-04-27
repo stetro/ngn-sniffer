@@ -21,36 +21,41 @@ repositories {
 }
 
 dependencies {
-	// compat
-	compile 'com.android.support:appcompat-v7:22.0.+'
-	compile 'com.android.support:cardview-v7:22.0.+@aar'
-	compile 'com.android.support:recyclerview-v7:22.0.+@aar'
-	compile 'com.android.support:support-annotations:22.0.+'
-
-	// api
-	compile 'de.greenrobot:eventbus:2.4.+'
-	compile 'com.squareup.okhttp:okhttp:2.2.+'
-	compile 'com.squareup.okhttp:okhttp-urlconnection:2.2.+'
-
-	// ui
-	compile 'com.nineoldandroids:library:2.4.0+'
-    compile 'com.afollestad:material-dialogs:0.6.+'
-	compile 'com.github.navasmdc:MaterialDesign:1.+@aar'
+    // compat
+    compile 'com.android.support:appcompat-v7:22.0.+'
+    compile 'com.android.support:cardview-v7:22.0.+@aar'
+    compile 'com.android.support:recyclerview-v7:22.0.+@aar'
+    compile 'com.android.support:support-annotations:22.0.+'
+    // api
+    compile 'de.greenrobot:eventbus:2.4.+'
+    compile 'com.squareup.okhttp:okhttp:2.2.+'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.2.+'
+    // ui
+    compile 'com.nineoldandroids:library:2.4.0+'
+    compile 'com.github.navasmdc:MaterialDesign:1.+@aar'
+    // Google Maps
+    compile 'com.google.android.gms:play-services-maps:7.0.0'
 }
 
 android {
-	compileSdkVersion 22
-	buildToolsVersion '22.0.0'
-
-	defaultConfig {
-		minSdkVersion 18
-		targetSdkVersion 22
-		versionCode 1
-		versionName '0.0.1'
-		applicationId 'de.fhkoeln.ngn'
-	}
-
-	lintOptions {
-		warning 'InvalidPackage'
-	}
+    signingConfigs {
+        debug {
+            keyAlias 'sniffer'
+            keyPassword 'dnprak'
+            storeFile file('/home/ivan/AndroidWorkspace/ngn_keystore')
+            storePassword 'dnprak'
+        }
+    }
+    compileSdkVersion 22
+    buildToolsVersion '22.0.0'
+    defaultConfig {
+        minSdkVersion 18
+        targetSdkVersion 22
+        versionCode 1
+        versionName '0.0.1'
+        applicationId 'de.fhkoeln.ngn'
+    }
+    lintOptions {
+        warning 'InvalidPackage'
+    }
 }

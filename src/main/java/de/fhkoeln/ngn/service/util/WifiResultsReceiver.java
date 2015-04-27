@@ -24,6 +24,6 @@ public class WifiResultsReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         List<ScanResult> scanResults = wifiManager.getScanResults();
         EventBus.getDefault().post(new WifiScanResultEvent(scanResults));
-        Log.d("WifiScanResultsReceiver", "Received " + scanResults.size() + " results");
+        //Log.d("WifiScanResultsReceiver", "Received " + scanResults.size() + " results");
     }
 }

@@ -7,6 +7,8 @@ import de.fhkoeln.ngn.service.event.LocationFoundEvent;
 
 public class LocationUtil {
     public static String aggregateLocationInfoResult(Context context, LocationFoundEvent e) {
-        return String.valueOf(e.getLocation());
+        String locationLatLong;
+        locationLatLong = ""+e.getLocation().getLatitude() + " Latitude\n"+ e.getLocation().getLongitude()+" Longitude";
+        return locationLatLong;
     }
 }

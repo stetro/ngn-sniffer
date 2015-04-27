@@ -2,8 +2,11 @@ package de.fhkoeln.ngn.fragment;
 
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,6 +71,18 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
 
         ButtonFlat scanButton = (ButtonFlat) view.findViewById(R.id.scan_fragment_scan_button);
         scanButton.setOnClickListener(this);
+
+        ButtonFlat mapsButton = (ButtonFlat) view.findViewById(R.id.scan_fragment_maps_button);
+        mapsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                EventBus.getDefault().post(new LocationSearchStartedEvent());
+                MapsFragment mapsFragment = new MapsFragment();
+                FragmentManager fm = getFragmentManager();
+                fm.beginTransaction().replace(R.id.main_fragment_container, mapsFragment).commit();
+            }
+        });
 
         wifiScanResult = (TextView) view.findViewById(R.id.scan_fragment_wifi_scan_result);
         wifiInfoResult = (TextView) view.findViewById(R.id.scan_fragment_wifi_info_result);
@@ -137,6 +152,7 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
     }
 
     public void onEvent(LocationFoundEvent e) {
+        Log.d("ScanFragment", "LocationFoundEvent was fired.");
         locationProgress.setVisibility(View.GONE);
         locationLayout.setVisibility(View.VISIBLE);
         locationInfoResult.setText(LocationUtil.aggregateLocationInfoResult(getActivity(), e));
