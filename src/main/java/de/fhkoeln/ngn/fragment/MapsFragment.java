@@ -20,6 +20,7 @@ import java.util.zip.Inflater;
 
 import de.fhkoeln.ngn.R;
 import de.fhkoeln.ngn.service.event.LocationFoundEvent;
+import de.fhkoeln.ngn.service.util.MapsUtil;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -60,14 +61,16 @@ public class MapsFragment extends Fragment
     {
         Log.d("MapsFragment", "Location was found and will be set.");
         // Updates the location and zoom of the MapView
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(e.getLocation().getLatitude(), e.getLocation().getLongitude()), 13);
+        LatLng latLng = new LatLng(e.getLocation().getLatitude(), e.getLocation().getLongitude());
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 13);
         map.animateCamera(cameraUpdate);
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(e.getLocation().getLatitude(), e.getLocation().getLongitude()))
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng)
                 .zoom(15) // Sets the zoom
                 //.bearing(90) // Sets orientatin of the camera to east
                 //.tilt(40) // Sets the tilt of the camera to 40 degrees
                 .build();
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        MapsUtil.addHeatMap(map, latLng);
     }
 
     @Override
