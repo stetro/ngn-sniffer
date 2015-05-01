@@ -51,8 +51,12 @@ router.post '/', (req,res,next) ->
 # get measurements for wifi access points with GET /measurement/wifi
 router.get '/wifi', (req, res, next) ->
   points = []
+  if(distanceKm(req.query.nelat, req.query.nelng, req.query.swlat, req.query.swlng) > 10.0)
+    res.json(points)
+    return
   if req.query.nelat is undefined or req.query.swlat is undefined or req.query.nelng is undefined or req.query.swlng is undefined
     res.json(points)
+    return
   Measurement.find(
     location:
       $geoWithin:
@@ -72,8 +76,12 @@ router.get '/wifi', (req, res, next) ->
 # get measurements for signal strength with GET /measurement/signal
 router.get '/signal', (req, res, next) ->
   points = []
+  if(distanceKm(req.query.nelat, req.query.nelng, req.query.swlat, req.query.swlng) > 10.0)
+    res.json(points)
+    return
   if req.query.nelat is undefined or req.query.swlat is undefined or req.query.nelng is undefined or req.query.swlng is undefined
     res.json(points)
+    return
   Measurement.find
     location:
       $geoWithin:
@@ -89,3 +97,12 @@ router.get '/signal', (req, res, next) ->
       points.push([point.location.coordinates[0], point.location.coordinates[1],  parseFloat(point.signalDBm) / 31.0])
     res.json(points)
 
+
+distanceKm = (lat1, lon1, lat2, lon2) -> 
+  R = 6371
+  dLat = (lat2 - lat1) * Math.PI / 180
+  dLon = (lon2 - lon1) * Math.PI / 180
+  a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) * Math.sin(dLon / 2)
+  c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+  d = R * c
+  return d
