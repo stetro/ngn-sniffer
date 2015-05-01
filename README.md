@@ -2,8 +2,14 @@
 Android and Web based APP for a lecture called Next Generation Networks (NGN) to collect and visualize location based rf signals like Cellular, Bluetooth or Wifi.
 
 ![Implemented Stack](img/stack.png)
-![Implemented Stack](img/mobile.png)
-![Implemented Stack](img/web.png)
+
+> Android App Screenshot
+
+![Android App Screenshot](img/mobile.png =250x)
+
+> Web Frontend Screenshot ([Heroku](http://ngn.herokuapp.com/))
+
+![Web Frontend Screenshot](img/web.png)
 
 ### NGN-Sniffer Server
 
