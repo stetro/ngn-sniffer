@@ -5,7 +5,7 @@ Android and Web based APP for a lecture called Next Generation Networks (NGN) to
 
 > Android App Screenshot
 
-![Android App Screenshot](img/mobile.png =250x)
+![Android App Screenshot](img/mobile.png)
 
 > Web Frontend Screenshot ([Heroku](http://ngn.herokuapp.com/))
 
