@@ -31,26 +31,8 @@ public class MainActivity extends BaseActivity {
         setTitle(R.string.app_name);
         prepareSettingsDrawer();
         prepareContentFragment();
-        startService(new Intent(this, WifiService.class));
-        startService(new Intent(this, BluetoothService.class));
-        startService(new Intent(this, LocationService.class));
-        startService(new Intent(this, GSMService.class));
+        startServices();
         EventBus.getDefault().register(this);
-    }
-
-    private void prepareContentFragment() {
-        ScanFragment scanFragment = new ScanFragment();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.add(R.id.main_fragment_container, scanFragment);
-        transaction.commit();
-    }
-
-    private void prepareSettingsDrawer() {
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        Toolbar actionBarToolbar = getActionBarToolbar();
-        setSupportActionBar(actionBarToolbar);
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, actionBarToolbar, R.string.app_name, R.string.app_name);
-        drawerLayout.setDrawerListener(drawerToggle);
     }
 
     @Override
@@ -79,14 +61,40 @@ public class MainActivity extends BaseActivity {
         super.onBackPressed();
     }
 
-    public void onEvent(NoSubscriberEvent e) {
-        Log.d("MainActivity", e.originalEvent.toString() + " is ignored");
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        stopServices();
+    }
+
+    public void onEvent(NoSubscriberEvent e) {
+        Log.d("MainActivity", e.originalEvent.toString() + " is ignored");
+    }
+
+    private void prepareSettingsDrawer() {
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        Toolbar actionBarToolbar = getActionBarToolbar();
+        setSupportActionBar(actionBarToolbar);
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, actionBarToolbar, R.string.app_name, R.string.app_name);
+        drawerLayout.setDrawerListener(drawerToggle);
+    }
+
+    private void prepareContentFragment() {
+        ScanFragment scanFragment = new ScanFragment();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.add(R.id.main_fragment_container, scanFragment);
+        transaction.commit();
+    }
+
+    private void startServices() {
+        startService(new Intent(this, WifiService.class));
+        startService(new Intent(this, BluetoothService.class));
+        startService(new Intent(this, LocationService.class));
+        startService(new Intent(this, GSMService.class));
+    }
+
+    private void stopServices() {
         stopService(new Intent(this, WifiService.class));
         stopService(new Intent(this, BluetoothService.class));
         stopService(new Intent(this, LocationService.class));

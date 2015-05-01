@@ -24,4 +24,5 @@
     <string name="gsm_info_title">Current GSM Connection:</string>
     <string name="gsm_not_available">GSM not available</string>
     <string name="gsm_deactivated">GSM is deactivated</string>
+    <string name="start_collecting">Start Collecting</string>
 </resources>

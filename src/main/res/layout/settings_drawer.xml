@@ -107,30 +107,14 @@
         android:layout_marginTop="20dp"
         android:background="@color/button_material_dark" />
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
+    <com.gc.materialdesign.views.ButtonFlat
+        android:id="@+id/settings_scan_button"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginStart="10dp">
-
-        <TextView
-            android:id="@+id/text_gps"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/gps"
-            android:textAppearance="@android:style/TextAppearance.Medium.Inverse" />
-
-        <com.gc.materialdesign.views.CheckBox
-            android:id="@+id/switch_gps"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:background="@color/primary"
-            app:check="true" />
-
-    </RelativeLayout>
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:background="@color/primary_dark"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="@string/start_collecting"/>
 </LinearLayout>
