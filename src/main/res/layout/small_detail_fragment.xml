@@ -1,24 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     android:layout_width="fill_parent"
-    android:orientation="horizontal"
-    android:padding="10dp"
-    android:background="@color/background_material_dark"
     android:layout_height="@dimen/drawer_height"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:weightSum="4"
+    android:orientation="horizontal"
+    android:background="@color/background_material_dark"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:baselineAligned="false">
 
-    <TextView
-        android:textAppearance="@android:style/TextAppearance.Large.Inverse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/small_detail_fragment_signal_strength"
-        android:layout_marginRight="20dp"
-        android:layout_marginEnd="20dp" />
-    <TextView
-        android:textAppearance="@android:style/TextAppearance.Large.Inverse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/small_detail_fragment_wifi_aps"
-        android:layout_marginRight="20dp"
-        android:layout_marginEnd="20dp"/>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:orientation="vertical"
+        android:layout_height="@dimen/drawer_height"
+        android:layout_weight="1">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:drawablePadding="-10dp"
+            android:gravity="center"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:drawableStart="@drawable/signal"
+            android:layout_height="wrap_content"
+            android:textAppearance="@android:style/TextAppearance.Small.Inverse"
+            android:text="@string/signal" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/small_detail_fragment_signal"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:text="-123 dBm"
+            android:textAppearance="@android:style/TextAppearance.Medium.Inverse" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:orientation="vertical"
+        android:layout_height="@dimen/drawer_height"
+        android:layout_weight="1">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:drawablePadding="-10dp"
+            android:gravity="center"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:drawableStart="@drawable/wifi"
+            android:layout_height="wrap_content"
+            android:textAppearance="@android:style/TextAppearance.Small.Inverse"
+            android:text="@string/wifi" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/small_detail_fragment_wifi"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:text="0 AP's"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textAppearance="@android:style/TextAppearance.Medium.Inverse" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="@dimen/drawer_height"
+        android:orientation="vertical"
+        android:layout_weight="1">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:drawablePadding="-10dp"
+            android:gravity="center"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:drawableStart="@drawable/bluetooth"
+            android:drawableLeft="@drawable/bluetooth"
+            android:layout_height="wrap_content"
+            android:textAppearance="@android:style/TextAppearance.Small.Inverse"
+            android:text="@string/bluetooth" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/small_detail_fragment_bluetooth"
+            android:gravity="center"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textSize="14sp"
+            android:text="0 Devices"
+            android:textAppearance="@android:style/TextAppearance.Medium.Inverse" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:orientation="vertical"
+        android:layout_height="@dimen/drawer_height"
+        android:layout_weight="1">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:drawablePadding="-10dp"
+            android:gravity="center"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:drawableStart="@drawable/location"
+            android:drawableLeft="@drawable/location"
+            android:layout_marginBottom="-4dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="@android:style/TextAppearance.Small.Inverse"
+            android:text="@string/location" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/small_detail_fragment_location_lat"
+            android:gravity="center"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textSize="12sp"
+            android:text="Lat 7.123123"
+            android:textAppearance="@android:style/TextAppearance.Small.Inverse" />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/small_detail_fragment_location_lng"
+            android:gravity="center"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textSize="12sp"
+            android:text="Lng 7.123123"
+            android:textAppearance="@android:style/TextAppearance.Small.Inverse" />
+
+    </LinearLayout>
+
 </LinearLayout>

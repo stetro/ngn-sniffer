@@ -42,4 +42,9 @@ public class BluetoothUtil {
         Set<BluetoothDevice> bondedDevices = bluetoothManager.getAdapter().getBondedDevices();
         return listBluetoothDeviceList(context, bondedDevices);
     }
+
+    public static int getDeviceCount(Context context) {
+        Collection<BluetoothDevice> deviceList = BluetoothResultsReceiver.getDeviceList();
+        return deviceList.size();
+    }
 }

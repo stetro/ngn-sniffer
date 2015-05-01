@@ -25,7 +25,8 @@
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp">
 
                 <com.gc.materialdesign.views.ButtonFlat
                     android:id="@+id/scan_fragment_scan_button"
@@ -39,17 +40,6 @@
                     android:text="@string/start_scanning"
                     android:layout_weight=".5" />
 
-                <com.gc.materialdesign.views.ButtonFlat
-                    android:id="@+id/scan_fragment_maps_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/primary_dark"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:text="@string/show_heatmap"
-                    android:layout_weight=".5" />
             </LinearLayout>
 
             <include layout="@layout/scan_fragment_wifi" />

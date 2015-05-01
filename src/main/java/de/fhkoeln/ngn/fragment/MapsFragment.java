@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +27,7 @@ import java.util.List;
 
 import de.fhkoeln.ngn.R;
 import de.fhkoeln.ngn.data.HeatMapDataProvider;
+import de.fhkoeln.ngn.service.event.LocationChangedEvent;
 import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -130,12 +130,12 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationChan
 
     @Override
     public void onMyLocationChange(Location location) {
-        Log.d("MapFragment", location.toString());
-        updateHeatMapData();
+        EventBus.getDefault().post(new LocationChangedEvent(location));
     }
 
     @Override
     public void onCameraChange(CameraPosition cameraPosition) {
+        heatMapTileProvider.setRadius((int) (cameraPosition.zoom * 3));
         updateHeatMapData();
     }
 }
