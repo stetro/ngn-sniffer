@@ -1,7 +1,6 @@
 package de.fhkoeln.ngn.service.util;
 
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.os.Build;
 import android.telephony.CellInfo;
 import android.telephony.CellLocation;
@@ -9,8 +8,6 @@ import android.telephony.NeighboringCellInfo;
 import android.telephony.PhoneStateListener;
 import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
-
-import com.squareup.okhttp.internal.Platform;
 
 import java.util.List;
 
@@ -242,9 +239,13 @@ public class GSMUtil
 
         tm.listen(new MyPhoneStateListener(), PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
 
-        sb.append("GSM signal strength: ").append( (signalStrengthDbm<=0)? -113 :signalStrengthDbm*2 - 113).append(" dBm\n");
+        sb.append("GSM signal strength: ").append(getTransformedSignalStrength()).append(" dBm\n");
 
         return sb.toString();
+    }
+
+    public static int getTransformedSignalStrength() {
+        return (signalStrengthDbm<=0)? -113 :signalStrengthDbm*2 - 113;
     }
 
     public static void getCellLocation(GSMResultEvent e)
@@ -253,7 +254,7 @@ public class GSMUtil
         CellLocation cellLocation = tm.getCellLocation();
     }
 
-    private static int signalStrengthDbm;
+    public static int signalStrengthDbm;
 
     private static class MyPhoneStateListener extends PhoneStateListener
     {

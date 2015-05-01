@@ -12,10 +12,9 @@ import android.view.Gravity;
 import android.view.MenuItem;
 
 import de.fhkoeln.ngn.R;
-import de.fhkoeln.ngn.fragment.ScanFragment;
+import de.fhkoeln.ngn.fragment.MapsFragment;
 import de.fhkoeln.ngn.service.BluetoothService;
 import de.fhkoeln.ngn.service.GSMService;
-import de.fhkoeln.ngn.service.LocationService;
 import de.fhkoeln.ngn.service.WifiService;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.NoSubscriberEvent;
@@ -81,23 +80,21 @@ public class MainActivity extends BaseActivity {
     }
 
     private void prepareContentFragment() {
-        ScanFragment scanFragment = new ScanFragment();
+        MapsFragment mapsFragment = new MapsFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.add(R.id.main_fragment_container, scanFragment);
+        transaction.add(R.id.main_fragment_container, mapsFragment);
         transaction.commit();
     }
 
     private void startServices() {
         startService(new Intent(this, WifiService.class));
         startService(new Intent(this, BluetoothService.class));
-        startService(new Intent(this, LocationService.class));
         startService(new Intent(this, GSMService.class));
     }
 
     private void stopServices() {
         stopService(new Intent(this, WifiService.class));
         stopService(new Intent(this, BluetoothService.class));
-        stopService(new Intent(this, LocationService.class));
         stopService(new Intent(this, GSMService.class));
     }
 }

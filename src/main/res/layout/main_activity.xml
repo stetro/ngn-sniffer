@@ -21,9 +21,9 @@
         <fragment
             android:id="@+id/fragment_drawer"
             android:name="de.fhkoeln.ngn.fragment.SettingsDrawer"
-            android:layout_width="@dimen/drawer_width"
+            android:layout_width="@dimen/navigation_drawer_width"
             android:layout_height="match_parent"
-            android:layout_gravity="left|start" />
+            android:layout_gravity="start" />
     </android.support.v4.widget.DrawerLayout>
 
 </LinearLayout>
