@@ -15,7 +15,9 @@ import retrofit.client.Response;
 
 public class HeatMapDataProvider {
 
-    public static void updateHeatMapData(LatLngBounds bounds, final Callback<List<WeightedLatLng>> callback) {
+    private static RestAdapter restAdapter;
+
+    public static void getHeatMapData(LatLngBounds bounds, final Callback<List<WeightedLatLng>> callback) {
 
         Callback<List<List<Double>>> cb = new Callback<List<List<Double>>>() {
             @Override
@@ -29,11 +31,7 @@ public class HeatMapDataProvider {
             }
         };
 
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint("http://ngn.herokuapp.com/")
-                .setLogLevel(RestAdapter.LogLevel.FULL)
-                .build();
-        HeatMapDataService heatMapDataService = restAdapter.create(HeatMapDataService.class);
+        HeatMapDataService heatMapDataService = getRestAdapter().create(HeatMapDataService.class);
         heatMapDataService.getSignalHeatmapPoints(
                 bounds.northeast.latitude, bounds.northeast.longitude,
                 bounds.southwest.latitude, bounds.southwest.longitude,
@@ -47,5 +45,29 @@ public class HeatMapDataProvider {
             latLngArrayList.add(new WeightedLatLng(latLng, point.get(2)));
         }
         return latLngArrayList;
+    }
+
+    public static RestAdapter getRestAdapter() {
+        if (restAdapter == null) {
+            restAdapter = new RestAdapter.Builder()
+                    .setEndpoint("http://ngn.herokuapp.com/")
+                    .setLogLevel(RestAdapter.LogLevel.BASIC)
+                    .build();
+        }
+        return restAdapter;
+    }
+
+    public static void saveMeasurement(Measurement measurement) {
+        restAdapter.create(HeatMapDataService.class).saveNewMeasurement(measurement, new Callback<Measurement>() {
+            @Override
+            public void success(Measurement measurement, Response response) {
+
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
     }
 }

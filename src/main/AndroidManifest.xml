@@ -48,7 +48,7 @@
 
         <service android:name=".service.WifiService" />
         <service android:name=".service.BluetoothService" />
-        <service android:name=".service.GSMService"/>
+        <service android:name=".service.CellularService"/>
 
     </application>
 </manifest>

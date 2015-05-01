@@ -2,7 +2,6 @@ package de.fhkoeln.ngn.fragment;
 
 
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -19,14 +18,12 @@ import de.fhkoeln.ngn.service.event.BluetoothScanEvent;
 import de.fhkoeln.ngn.service.event.BluetoothScanResultEvent;
 import de.fhkoeln.ngn.service.event.BluetoothScanStartedEvent;
 import de.fhkoeln.ngn.service.event.BluetoothScanStopEvent;
-import de.fhkoeln.ngn.service.event.GSMResultEvent;
-import de.fhkoeln.ngn.service.event.GSMScanEvent;
-import de.fhkoeln.ngn.service.event.GSMScanStartedEvent;
+import de.fhkoeln.ngn.service.event.CellularResultEvent;
 import de.fhkoeln.ngn.service.event.WifiScanEvent;
 import de.fhkoeln.ngn.service.event.WifiScanResultEvent;
 import de.fhkoeln.ngn.service.event.WifiScanStartedEvent;
 import de.fhkoeln.ngn.service.util.BluetoothUtil;
-import de.fhkoeln.ngn.service.util.GSMUtil;
+import de.fhkoeln.ngn.service.util.CellularUtil;
 import de.fhkoeln.ngn.service.util.WifiUtil;
 import de.greenrobot.event.EventBus;
 
@@ -43,11 +40,10 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
     private ProgressBarCircularIndeterminate bluetoothProgress;
     private ButtonFlat bluetoothStopButton;
 
-    private LinearLayout gsmLayout;
-    private TextView gsmLteResult;
-    private TextView gsmRegisteredCellInfo;
-    private TextView gsmNeighboringCellsInfo;
-    private ProgressBarCircularIndeterminate gsmProgress;
+    private LinearLayout cellularLayout;
+    private TextView cellularLateResult;
+    private TextView cellularRegisteredCellInfo;
+    private TextView cellularNeighboringCellsInfo;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,16 +58,6 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
 
         ButtonFlat scanButton = (ButtonFlat) view.findViewById(R.id.scan_fragment_scan_button);
         scanButton.setOnClickListener(this);
-
-        ButtonFlat mapsButton = (ButtonFlat) view.findViewById(R.id.scan_fragment_maps_button);
-        mapsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MapsFragment mapsFragment = new MapsFragment();
-                FragmentManager fm = getFragmentManager();
-                fm.beginTransaction().replace(R.id.main_fragment_container, mapsFragment).commit();
-            }
-        });
 
         wifiScanResult = (TextView) view.findViewById(R.id.scan_fragment_wifi_scan_result);
         wifiInfoResult = (TextView) view.findViewById(R.id.scan_fragment_wifi_info_result);
@@ -93,11 +79,10 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
             }
         });
 
-        gsmLteResult = (TextView) view.findViewById(R.id.scan_fragment_gsm_lte_info);
-        gsmRegisteredCellInfo = (TextView) view.findViewById(R.id.scan_fragment_gsm_registeredcell_info);
-        gsmNeighboringCellsInfo = (TextView) view.findViewById(R.id.scan_fragment_gsm_neighboringcells_info);
-        gsmLayout = (LinearLayout) view.findViewById(R.id.scan_fragment_gsm);
-        gsmProgress = (ProgressBarCircularIndeterminate) view.findViewById(R.id.scan_fragment_gsm_progress);
+        cellularLateResult = (TextView) view.findViewById(R.id.scan_fragment_cellular_lte_info);
+        cellularRegisteredCellInfo = (TextView) view.findViewById(R.id.scan_fragment_cellular_registeredcell_info);
+        cellularNeighboringCellsInfo = (TextView) view.findViewById(R.id.scan_fragment_cellular_neighboringcells_info);
+        cellularLayout = (LinearLayout) view.findViewById(R.id.scan_fragment_cellular);
 
         return view;
     }
@@ -108,7 +93,6 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
         bluetoothLayout.setVisibility(View.GONE);
         EventBus.getDefault().post(new WifiScanEvent());
         EventBus.getDefault().post(new BluetoothScanEvent());
-        EventBus.getDefault().post(new GSMScanEvent());
     }
 
     public void onEvent(BluetoothScanResultEvent e) {
@@ -135,16 +119,11 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
         wifiProgress.setVisibility(View.VISIBLE);
     }
 
-    public void onEvent(GSMScanStartedEvent e) {
-        gsmProgress.setVisibility(View.VISIBLE);
-    }
-
-    public void onEvent(GSMResultEvent e) {
-        gsmProgress.setVisibility(View.GONE);
-        gsmLayout.setVisibility(View.VISIBLE);
-        gsmLteResult.setText(GSMUtil.getLTEInfo(e));
-        gsmRegisteredCellInfo.setText(GSMUtil.getAllInfo(e));
-        gsmNeighboringCellsInfo.setText(GSMUtil.getNeighboringCellInfo(e));
+    public void onEvent(CellularResultEvent e) {
+        cellularLayout.setVisibility(View.VISIBLE);
+        cellularLateResult.setText(CellularUtil.getLTEInfo(e));
+        cellularRegisteredCellInfo.setText(CellularUtil.getAllInfo(e));
+        cellularNeighboringCellsInfo.setText(CellularUtil.getNeighboringCellInfo(e));
     }
 
     @Override

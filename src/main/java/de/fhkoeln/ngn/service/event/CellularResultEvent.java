@@ -9,11 +9,11 @@ import java.util.List;
 /**
  * Created by Ivan on 27.03.2015.
  */
-public class GSMResultEvent
+public class CellularResultEvent
 {
     private TelephonyManager telephonyManager;
 
-    public GSMResultEvent(TelephonyManager telephonyManager)
+    public CellularResultEvent(TelephonyManager telephonyManager)
     {
         this.telephonyManager = telephonyManager;
     }
@@ -23,7 +23,7 @@ public class GSMResultEvent
         return telephonyManager.getAllCellInfo();
     }
 
-    public CellLocation getGSMCell()
+    public CellLocation getCellularCell()
     {
         return telephonyManager.getCellLocation();
     }

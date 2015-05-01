@@ -92,7 +92,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationChan
 
     private void updateHeatMapData() {
         LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
-        HeatMapDataProvider.updateHeatMapData(bounds, new Callback<List<WeightedLatLng>>() {
+        HeatMapDataProvider.getHeatMapData(bounds, new Callback<List<WeightedLatLng>>() {
 
             @Override
             public void success(List<WeightedLatLng> weightedLatLngList, Response response) {

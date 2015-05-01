@@ -11,7 +11,7 @@ import android.widget.Toast;
 import de.fhkoeln.ngn.R;
 import de.fhkoeln.ngn.service.event.WifiScanEvent;
 import de.fhkoeln.ngn.service.event.WifiScanStartedEvent;
-import de.fhkoeln.ngn.service.util.WifiResultsReceiver;
+import de.fhkoeln.ngn.service.receiver.WifiResultsReceiver;
 import de.greenrobot.event.EventBus;
 
 public class WifiService extends Service {

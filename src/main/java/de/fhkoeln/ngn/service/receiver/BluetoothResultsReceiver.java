@@ -1,4 +1,4 @@
-package de.fhkoeln.ngn.service.util;
+package de.fhkoeln.ngn.service.receiver;
 
 
 import android.bluetooth.BluetoothDevice;

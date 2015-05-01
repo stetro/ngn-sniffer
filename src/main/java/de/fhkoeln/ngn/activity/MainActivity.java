@@ -9,12 +9,16 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import de.fhkoeln.ngn.R;
+import de.fhkoeln.ngn.data.HeatMapDataProvider;
 import de.fhkoeln.ngn.fragment.MapsFragment;
+import de.fhkoeln.ngn.fragment.SmallDetailFragment;
 import de.fhkoeln.ngn.service.BluetoothService;
-import de.fhkoeln.ngn.service.GSMService;
+import de.fhkoeln.ngn.service.CellularService;
 import de.fhkoeln.ngn.service.WifiService;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.NoSubscriberEvent;
@@ -36,6 +40,9 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.menu_save_measurement){
+            HeatMapDataProvider.saveMeasurement(SmallDetailFragment.getMeasurement());
+        }
         return drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
@@ -58,6 +65,13 @@ public class MainActivity extends BaseActivity {
             return;
         }
         super.onBackPressed();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -89,13 +103,13 @@ public class MainActivity extends BaseActivity {
     private void startServices() {
         startService(new Intent(this, WifiService.class));
         startService(new Intent(this, BluetoothService.class));
-        startService(new Intent(this, GSMService.class));
+        startService(new Intent(this, CellularService.class));
     }
 
     private void stopServices() {
         stopService(new Intent(this, WifiService.class));
         stopService(new Intent(this, BluetoothService.class));
-        stopService(new Intent(this, GSMService.class));
+        stopService(new Intent(this, CellularService.class));
     }
 }
 

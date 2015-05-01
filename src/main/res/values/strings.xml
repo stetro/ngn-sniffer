@@ -3,7 +3,7 @@
 	<string name="app_name">NGNSniffer</string>
     <string name="wifi">Wifi</string>
     <string name="bluetooth">Bluetooth</string>
-    <string name="gsm">GSM</string>
+    <string name="cellular">Cellular</string>
     <string name="settings_text">Activate or deactivate services to scan environmental channels, accesspoints and devices.</string>
     <string name="gps">GPS Logging</string>
     <string name="activate_wifi">Activate Wifi ...</string>
@@ -21,10 +21,11 @@
     <string name="stop_scanning">Stop</string>
     <string name="location">Location</string>
     <string name="location_info_title">Your Current Location:</string>"
-    <string name="gsm_info_title">Current GSM Connection:</string>
-    <string name="gsm_not_available">GSM not available</string>
-    <string name="gsm_deactivated">GSM is deactivated</string>
+    <string name="cellular_info_title">Current Cellular Connection:</string>
+    <string name="cellular_not_available">Cellular not available</string>
+    <string name="cellular_deactivated">Cellular is deactivated</string>
     <string name="start_collecting">Start Collecting</string>
     <string name="signal">Signal</string>
     <string name="description">description</string>
+    <string name="save_measurement">Save Measurement</string>
 </resources>

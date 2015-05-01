@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.Set;
 
 import de.fhkoeln.ngn.R;
+import de.fhkoeln.ngn.service.receiver.BluetoothResultsReceiver;
 
 public class BluetoothUtil {
     private static String listBluetoothDeviceList(Context context, Collection<BluetoothDevice> deviceList) {

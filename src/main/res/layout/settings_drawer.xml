@@ -86,7 +86,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="@string/gsm"
+            android:text="@string/cellular"
             android:textAppearance="@android:style/TextAppearance.Medium.Inverse" />
 
         <com.gc.materialdesign.views.CheckBox

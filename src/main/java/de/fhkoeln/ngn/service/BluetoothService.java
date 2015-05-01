@@ -14,7 +14,7 @@ import de.fhkoeln.ngn.R;
 import de.fhkoeln.ngn.service.event.BluetoothScanEvent;
 import de.fhkoeln.ngn.service.event.BluetoothScanStartedEvent;
 import de.fhkoeln.ngn.service.event.BluetoothScanStopEvent;
-import de.fhkoeln.ngn.service.util.BluetoothResultsReceiver;
+import de.fhkoeln.ngn.service.receiver.BluetoothResultsReceiver;
 import de.greenrobot.event.EventBus;
 
 public class BluetoothService extends Service {

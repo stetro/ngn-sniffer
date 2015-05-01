@@ -1,7 +1,9 @@
 # ngn-sniffer [![Build Status](https://travis-ci.org/stetro/ngn-sniffer.svg)](https://travis-ci.org/stetro/ngn-sniffer)
-Android and Web based APP for a lecture called Next Generation Networks (NGN) to collect and visualize location based rf signals like GSM, Bluetooth or Wifi.
+Android and Web based APP for a lecture called Next Generation Networks (NGN) to collect and visualize location based rf signals like Cellular, Bluetooth or Wifi.
 
-![Implemented Stack](stack.png)
+![Implemented Stack](img/stack.png)
+![Implemented Stack](img/mobile.png)
+![Implemented Stack](img/web.png)
 
 ### NGN-Sniffer Server
 
