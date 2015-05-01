@@ -1,11 +1,11 @@
 package de.fhkoeln.ngn.activity;
 
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import de.fhkoeln.ngn.R;
 
-public class BaseActivity extends ActionBarActivity {
+public class BaseActivity extends AppCompatActivity {
     private Toolbar mActionBarToolbar;
 
     protected Toolbar getActionBarToolbar() {

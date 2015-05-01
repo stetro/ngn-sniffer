@@ -29,3 +29,6 @@ proguard/
 
 # mac specific files
 .DS_Store
+
+
+keystore/
