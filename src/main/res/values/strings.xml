@@ -23,6 +23,7 @@
     <string name="location_info_title">Your Current Location:</string>"
     <string name="cellular_info_title">Current Cellular Connection:</string>
     <string name="cellular_not_available">Cellular not available</string>
+    <string name="cellular_neighboring_cells">Neighboring cells</string>
     <string name="cellular_deactivated">Cellular is deactivated</string>
     <string name="start_collecting">Start Collecting</string>
     <string name="signal">Signal</string>

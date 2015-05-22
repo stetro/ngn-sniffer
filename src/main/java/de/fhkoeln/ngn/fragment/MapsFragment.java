@@ -131,6 +131,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationChan
     @Override
     public void onMyLocationChange(Location location) {
         EventBus.getDefault().post(new LocationChangedEvent(location));
+        HeatMapDataProvider.saveMeasurement(SmallDetailFragment.getMeasurement());
     }
 
     @Override

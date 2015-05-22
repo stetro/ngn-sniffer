@@ -2,7 +2,20 @@ package de.fhkoeln.ngn.service.util;
 
 import android.annotation.TargetApi;
 import android.os.Build;
+import android.telephony.CellIdentityCdma;
+import android.telephony.CellIdentityGsm;
+import android.telephony.CellIdentityLte;
+import android.telephony.CellIdentityWcdma;
 import android.telephony.CellInfo;
+import android.telephony.CellInfoCdma;
+import android.telephony.CellInfoGsm;
+import android.telephony.CellInfoLte;
+import android.telephony.CellInfoWcdma;
+import android.telephony.CellLocation;
+import android.telephony.CellSignalStrengthCdma;
+import android.telephony.CellSignalStrengthGsm;
+import android.telephony.CellSignalStrengthLte;
+import android.telephony.CellSignalStrengthWcdma;
 import android.telephony.NeighboringCellInfo;
 import android.telephony.TelephonyManager;
 
@@ -19,6 +32,85 @@ public class CellularUtil {
         StringBuilder sb = new StringBuilder();
         if (e.getLTECells() != null) {
             for (CellInfo cellInfo : e.getLTECells()) {
+                long timeStamp = cellInfo.getTimeStamp();
+                boolean registered = cellInfo.isRegistered();
+
+
+                if(cellInfo instanceof CellInfoGsm)
+                {
+                    CellInfoGsm cellInfoGsm = (CellInfoGsm) cellInfo;
+
+                    CellIdentityGsm cellIdentityGsm = cellInfoGsm.getCellIdentity();
+                    cellIdentityGsm.getCid();
+                    cellIdentityGsm.getLac();
+                    cellIdentityGsm.getMcc();
+                    cellIdentityGsm.getMnc();
+
+                    CellSignalStrengthGsm cellSignalStrengthGsm = cellInfoGsm.getCellSignalStrength();
+                    cellSignalStrengthGsm.getAsuLevel();
+                    cellSignalStrengthGsm.getDbm();
+                    cellSignalStrengthGsm.getLevel();
+                }
+                else
+                if(cellInfo instanceof CellInfoCdma)
+                {
+                    CellInfoCdma cellInfoCdma = (CellInfoCdma) cellInfo;
+
+                    CellIdentityCdma cellIdentityCdma = cellInfoCdma.getCellIdentity();
+                    cellIdentityCdma.getBasestationId();
+                    cellIdentityCdma.getLatitude();
+                    cellIdentityCdma.getLongitude();
+                    cellIdentityCdma.getNetworkId();
+                    cellIdentityCdma.getSystemId();
+
+                    CellSignalStrengthCdma cellSignalStrengthCdma = cellInfoCdma.getCellSignalStrength();
+                    cellSignalStrengthCdma.getLevel();
+                    cellSignalStrengthCdma.getDbm();
+                    cellSignalStrengthCdma.getAsuLevel();
+                    cellSignalStrengthCdma.getCdmaDbm();
+                    cellSignalStrengthCdma.getCdmaEcio();
+                    cellSignalStrengthCdma.getCdmaLevel();
+                    cellSignalStrengthCdma.getEvdoDbm();
+                    cellSignalStrengthCdma.getEvdoEcio();
+                    cellSignalStrengthCdma.getEvdoLevel();
+                    cellSignalStrengthCdma.getEvdoSnr();
+                }
+                else
+                if(cellInfo instanceof CellInfoLte)
+                {
+                    CellInfoLte cellInfoLte = (CellInfoLte) cellInfo;
+
+                    CellIdentityLte cellIndentityLte1 = cellInfoLte.getCellIdentity();
+                    cellIndentityLte1.getCi();
+                    cellIndentityLte1.getMcc();
+                    cellIndentityLte1.getMnc();
+                    cellIndentityLte1.getPci();
+                    cellIndentityLte1.getTac();
+
+                    CellSignalStrengthLte cellSignalStrengthLte = cellInfoLte.getCellSignalStrength();
+                    cellSignalStrengthLte.getLevel();
+                    cellSignalStrengthLte.getAsuLevel();
+                    cellSignalStrengthLte.getDbm();
+                    cellSignalStrengthLte.getTimingAdvance();
+                }
+                else
+                if(cellInfo instanceof CellInfoWcdma)
+                {
+                    CellInfoWcdma cellInfoWcdma = (CellInfoWcdma) cellInfo;
+
+                    CellIdentityWcdma cellIdentityWcdma = cellInfoWcdma.getCellIdentity();
+                    cellIdentityWcdma.getMnc();
+                    cellIdentityWcdma.getCid();
+                    cellIdentityWcdma.getLac();
+                    cellIdentityWcdma.getMcc();
+                    cellIdentityWcdma.getPsc();
+
+                    CellSignalStrengthWcdma cellSignalStrengthWcdma = cellInfoWcdma.getCellSignalStrength();
+                    cellSignalStrengthWcdma.getLevel();
+                    cellSignalStrengthWcdma.getDbm();
+                    cellSignalStrengthWcdma.getAsuLevel();
+
+                }
                 sb.append(cellInfo.describeContents()).append("\n");
             }
         } else {
@@ -210,6 +302,13 @@ public class CellularUtil {
             default:
                 return "unknown";
         }
+    }
+
+    public static String getCellLocation(CellularResultEvent e)
+    {
+        CellLocation cellLocation = e.getCellularCell();
+        //TODO: Was kann man damit anfange???
+        return cellLocation.toString();
     }
 
 }
