@@ -49,6 +49,7 @@
         <service android:name=".service.WifiService" />
         <service android:name=".service.BluetoothService" />
         <service android:name=".service.CellularService"/>
+        <service android:name=".service.LocationService"/>
 
     </application>
 </manifest>

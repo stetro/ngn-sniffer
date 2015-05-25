@@ -26,6 +26,7 @@
     <string name="cellular_neighboring_cells">Neighboring cells</string>
     <string name="cellular_deactivated">Cellular is deactivated</string>
     <string name="start_collecting">Start Collecting</string>
+    <string name="stop_collecting">Stop Collecting</string>
     <string name="signal">Signal</string>
     <string name="description">description</string>
     <string name="save_measurement">Save Measurement</string>

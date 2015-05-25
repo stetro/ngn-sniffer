@@ -19,6 +19,7 @@ import de.fhkoeln.ngn.fragment.MapsFragment;
 import de.fhkoeln.ngn.fragment.SmallDetailFragment;
 import de.fhkoeln.ngn.service.BluetoothService;
 import de.fhkoeln.ngn.service.CellularService;
+import de.fhkoeln.ngn.service.LocationService;
 import de.fhkoeln.ngn.service.WifiService;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.NoSubscriberEvent;
@@ -110,6 +111,7 @@ public class MainActivity extends BaseActivity {
         stopService(new Intent(this, WifiService.class));
         stopService(new Intent(this, BluetoothService.class));
         stopService(new Intent(this, CellularService.class));
+        stopService(new Intent(this, LocationService.class));
     }
 }
 

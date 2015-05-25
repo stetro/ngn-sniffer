@@ -13,6 +13,8 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.TileOverlay;
@@ -40,6 +42,8 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationChan
     private HeatmapTileProvider heatMapTileProvider;
     private Collection<WeightedLatLng> heatMapPoints = new HashSet<>();
     private TileOverlay heatMapOverlay;
+    private CircleOptions circleOptions;
+    private Circle circle;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationChan
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.maps_fragment, container, false);
         initializeMapView(savedInstanceState, v);
+
         return v;
     }
 
@@ -77,7 +82,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationChan
     }
 
     private void initializeHeatMapTileProvider() {
-        int[] colors = {Color.rgb(102, 225, 0), Color.rgb(255, 0, 0)};
+        int[] colors = {Color.rgb(255, 0, 0), Color.rgb(102, 225, 0)};
         float[] startPoints = {0.1f, 1f};
         Gradient gradient = new Gradient(colors, startPoints);
 
@@ -130,13 +135,40 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationChan
 
     @Override
     public void onMyLocationChange(Location location) {
-        EventBus.getDefault().post(new LocationChangedEvent(location));
-        HeatMapDataProvider.saveMeasurement(SmallDetailFragment.getMeasurement());
+        //TODO: Save measurement every 50 meters
+        //EventBus.getDefault().post(new LocationChangedEvent(location));
+        //HeatMapDataProvider.saveMeasurement(SmallDetailFragment.getMeasurement());
     }
 
     @Override
     public void onCameraChange(CameraPosition cameraPosition) {
         heatMapTileProvider.setRadius((int) (cameraPosition.zoom * 3));
         updateHeatMapData();
+        //drawMeasurementPoints();
+    }
+
+    public void drawMeasurementPoints()
+    {
+        LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
+        HeatMapDataProvider.getHeatMapData(bounds, new Callback<List<WeightedLatLng>>() {
+
+            @Override
+            public void success(List<WeightedLatLng> weightedLatLngList, Response response) {
+                if (weightedLatLngList.size() > 0) {
+                    heatMapTileProvider.setWeightedData(weightedLatLngList);
+                    heatMapOverlay.clearTileCache();
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+
+        circleOptions = new CircleOptions().center(bounds.getCenter()).radius(5);
+        circle = map.addCircle(circleOptions);
+        circle.setFillColor(getResources().getColor(R.color.indigo_500));
+        circle.setStrokeWidth(1);
     }
 }
