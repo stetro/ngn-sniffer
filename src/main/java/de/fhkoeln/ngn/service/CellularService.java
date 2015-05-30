@@ -55,6 +55,8 @@ public class CellularService extends Service {
         telephonyManager = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
         phoneStateListener = new MyPhoneStateListener();
         telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
+
+        Log.d("CellularService", "Created CellularService");
     }
 
     public void onEvent(LocationChangedEvent e) {

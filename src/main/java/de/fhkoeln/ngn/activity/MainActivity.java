@@ -105,6 +105,7 @@ public class MainActivity extends BaseActivity {
         startService(new Intent(this, WifiService.class));
         startService(new Intent(this, BluetoothService.class));
         startService(new Intent(this, CellularService.class));
+        startService(new Intent(this, LocationService.class));
     }
 
     private void stopServices() {

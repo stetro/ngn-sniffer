@@ -14,6 +14,7 @@ import com.google.android.gms.maps.GoogleMap;
 
 import de.fhkoeln.ngn.data.HeatMapDataProvider;
 import de.fhkoeln.ngn.fragment.SmallDetailFragment;
+import de.fhkoeln.ngn.service.event.AutoCollectEvent;
 import de.fhkoeln.ngn.service.event.LocationChangedEvent;
 import de.greenrobot.event.EventBus;
 
@@ -21,6 +22,7 @@ import de.greenrobot.event.EventBus;
 public class LocationService extends Service implements LocationListener
 {
     private LocationManager locationManager;
+    private boolean autoCollect = false;
     @Override
     public IBinder onBind(Intent intent) { return null; }
 
@@ -36,7 +38,10 @@ public class LocationService extends Service implements LocationListener
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 50, this);
     }
 
-    public void onEvent(LocationChangedEvent e) {}
+    public void onEvent(AutoCollectEvent e)
+    {
+        autoCollect = e.isAutoCollect();
+    }
 
     @Override
     public void onDestroy()
@@ -51,7 +56,8 @@ public class LocationService extends Service implements LocationListener
     public void onLocationChanged(Location location)
     {
         EventBus.getDefault().post(new LocationChangedEvent(location));
-        HeatMapDataProvider.saveMeasurement(SmallDetailFragment.getMeasurement());
+        if(autoCollect) HeatMapDataProvider.saveMeasurement(SmallDetailFragment.getMeasurement());
+        Log.d("LocationService", "onLoctionChanged: Lat: "+location.getLatitude()+" Long: "+location.getLongitude());
     }
 
     @Override

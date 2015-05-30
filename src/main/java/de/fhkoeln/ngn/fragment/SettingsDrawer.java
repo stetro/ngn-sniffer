@@ -18,6 +18,8 @@ import de.fhkoeln.ngn.R;
 import de.fhkoeln.ngn.service.BluetoothService;
 import de.fhkoeln.ngn.service.LocationService;
 import de.fhkoeln.ngn.service.WifiService;
+import de.fhkoeln.ngn.service.event.AutoCollectEvent;
+import de.greenrobot.event.EventBus;
 
 public class SettingsDrawer extends Fragment {
 
@@ -68,13 +70,15 @@ public class SettingsDrawer extends Fragment {
         public void onClick(View v) {
             if(v.isSelected())
             {
-                context.stopService(new Intent(context, LocationService.class));
+                //context.stopService(new Intent(context, LocationService.class));
+                EventBus.getDefault().post(new AutoCollectEvent(false));
                 v.setSelected(false);
                 collectButton.setText(context.getString(R.string.start_collecting));
             }
             else
             {
-                context.startService(new Intent(context, LocationService.class));
+                //context.startService(new Intent(context, LocationService.class));
+                EventBus.getDefault().post(new AutoCollectEvent(true));
                 v.setSelected(true);
                 collectButton.setText(context.getString(R.string.stop_collecting));
             }
