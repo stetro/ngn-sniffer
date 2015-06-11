@@ -30,8 +30,8 @@ exports.createOrReplaceMeasurement = (measurements, req) ->
 	  measurement.type = req.body.type
 	  return measurement
 
-exports.validateParameters = (req,res,next) ->
-  if(measurementLib.distanceKm(req.query.nelat, req.query.nelng, req.query.swlat, req.query.swlng) > 10.0)
+exports.validateParameters = (req, res, next) ->
+  if(distanceKm(req.query.nelat, req.query.nelng, req.query.swlat, req.query.swlng) > 10.0)
     res.json([])
     return
   if req.query.nelat is undefined or req.query.swlat is undefined or req.query.nelng is undefined or req.query.swlng is undefined
