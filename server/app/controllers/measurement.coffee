@@ -30,7 +30,6 @@ router.post '/', (req,res,next) ->
       else
         res.end()
 
-    
 # get measurements for wifi access points with GET /measurement/wifi
 router.get '/wifi', measurementLib.validateParameters, (req, res, next) ->
   Measurement.find(

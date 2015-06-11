@@ -1,14 +1,7 @@
 mongoose = require 'mongoose'
 Measurement  = mongoose.model 'Measurement'
 
-exports.distanceKm = (lat1, lon1, lat2, lon2) -> 
-  R = 6371
-  dLat = (lat2 - lat1) * Math.PI / 180
-  dLon = (lon2 - lon1) * Math.PI / 180
-  a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) * Math.sin(dLon / 2)
-  c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-  d = R * c
-  return d
+
 
 exports.createOrReplaceMeasurement = (measurements, req) ->
 	# if there is a too close measurement
@@ -25,8 +18,8 @@ exports.createOrReplaceMeasurement = (measurements, req) ->
 	else
 	  # avg the measurement
 	  measurement = measurements[0]
-	  measurement.signalDBm = Math.floor((req.body.signalDBm + measurement.signalDBm) / 2)
-	  measurement.wifiAPs = Math.floor((req.body.wifiAPs + measurement.wifiAPs) / 2)
+	  measurement.signalDBm = Math.floor((parseInt(req.body.signalDBm) + parseInt(measurement.signalDBm)) / 2)
+	  measurement.wifiAPs = Math.floor((parseInt(req.body.wifiAPs) + parseInt(measurement.wifiAPs)) / 2)
 	  measurement.type = req.body.type
 	  return measurement
 
@@ -38,3 +31,12 @@ exports.validateParameters = (req, res, next) ->
     res.json([])
     return
   next()
+
+distanceKm = (lat1, lon1, lat2, lon2) -> 
+  R = 6371
+  dLat = (lat2 - lat1) * Math.PI / 180
+  dLon = (lon2 - lon1) * Math.PI / 180
+  a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) * Math.sin(dLon / 2)
+  c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+  d = R * c
+  return d
