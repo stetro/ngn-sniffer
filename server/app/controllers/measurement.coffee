@@ -47,16 +47,19 @@ router.post '/', (req,res,next) ->
         res.status(500).end()
       else
         res.end()
-    
-# get measurements for wifi access points with GET /measurement/wifi
-router.get '/wifi', (req, res, next) ->
-  points = []
+
+
+validateParameters = (req,res,next) ->
   if(distanceKm(req.query.nelat, req.query.nelng, req.query.swlat, req.query.swlng) > 10.0)
-    res.json(points)
+    res.json([])
     return
   if req.query.nelat is undefined or req.query.swlat is undefined or req.query.nelng is undefined or req.query.swlng is undefined
-    res.json(points)
+    res.json([])
     return
+  next()
+    
+# get measurements for wifi access points with GET /measurement/wifi
+router.get '/wifi', validateParameters, (req, res, next) ->
   Measurement.find(
     location:
       $geoWithin:
@@ -68,20 +71,13 @@ router.get '/wifi', (req, res, next) ->
     if err
       res.status(500)
       return
-    for point in data
-      points.push([point.location.coordinates[0], point.location.coordinates[1], 0.5])
-    res.json(points)
+    res.json(data.map (item) ->
+      return [item.location.coordinates[0], item.location.coordinates[1], 0.5]
+    )
   )
 
 # get measurements for signal strength with GET /measurement/signal
-router.get '/signal', (req, res, next) ->
-  points = []
-  if(distanceKm(req.query.nelat, req.query.nelng, req.query.swlat, req.query.swlng) > 10.0)
-    res.json(points)
-    return
-  if req.query.nelat is undefined or req.query.swlat is undefined or req.query.nelng is undefined or req.query.swlng is undefined
-    res.json(points)
-    return
+router.get '/signal', validateParameters, (req, res, next) ->
   Measurement.find
     location:
       $geoWithin:
@@ -93,9 +89,25 @@ router.get '/signal', (req, res, next) ->
     if err
       res.status(500)
       return
-    for point in data
-      points.push([point.location.coordinates[0], point.location.coordinates[1],  parseFloat(point.signalDBm) / 31.0])
-    res.json(points)
+    res.json(data.map (item) ->
+      return [item.location.coordinates[0], item.location.coordinates[1],  parseFloat(item.signalDBm) / 31.0]
+    )
+
+# get plain measurements with GET /measurement/
+router.get '/', validateParameters, (req, res, next) ->
+  Measurement.find
+    location:
+      $geoWithin:
+        $box: [
+          [ parseFloat(req.query.swlat), parseFloat(req.query.swlng) ]
+          [ parseFloat(req.query.nelat), parseFloat(req.query.nelng) ]
+        ]
+  , (err, data)->
+    if err
+      res.status(500)
+      return
+    res.json data
+
 
 
 distanceKm = (lat1, lon1, lat2, lon2) -> 
