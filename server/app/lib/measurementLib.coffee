@@ -23,9 +23,18 @@ exports.createOrReplaceMeasurement = (measurements, req) ->
 	      coordinates: [req.body.lat, req.body.lng]
 	  )
 	else
-	  # replace the measurement
+	  # avg the measurement
 	  measurement = measurements[0]
-	  measurement.signalDBm = req.body.signalDBm
-	  measurement.wifiAPs = req.body.wifiAPs
+	  measurement.signalDBm = Math.floor((req.body.signalDBm + measurement.signalDBm) / 2)
+	  measurement.wifiAPs = Math.floor((req.body.wifiAPs + measurement.wifiAPs) / 2)
 	  measurement.type = req.body.type
 	  return measurement
+
+exports.validateParameters = (req,res,next) ->
+  if(measurementLib.distanceKm(req.query.nelat, req.query.nelng, req.query.swlat, req.query.swlng) > 10.0)
+    res.json([])
+    return
+  if req.query.nelat is undefined or req.query.swlat is undefined or req.query.nelng is undefined or req.query.swlng is undefined
+    res.json([])
+    return
+  next()

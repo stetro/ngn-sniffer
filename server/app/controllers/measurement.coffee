@@ -24,25 +24,15 @@ router.post '/', (req,res,next) ->
       console.log(err)
       res.status(500).end()
       return
-
     measurementLib.createOrReplaceMeasurement(measurements, req).save (err)->
       if err
         res.status(500).end()
       else
         res.end()
 
-
-validateParameters = (req,res,next) ->
-  if(measurementLib.distanceKm(req.query.nelat, req.query.nelng, req.query.swlat, req.query.swlng) > 10.0)
-    res.json([])
-    return
-  if req.query.nelat is undefined or req.query.swlat is undefined or req.query.nelng is undefined or req.query.swlng is undefined
-    res.json([])
-    return
-  next()
     
 # get measurements for wifi access points with GET /measurement/wifi
-router.get '/wifi', validateParameters, (req, res, next) ->
+router.get '/wifi', measurementLib.validateParameters, (req, res, next) ->
   Measurement.find(
     location:
       $geoWithin:
@@ -60,7 +50,7 @@ router.get '/wifi', validateParameters, (req, res, next) ->
   )
 
 # get measurements for signal strength with GET /measurement/signal
-router.get '/signal', validateParameters, (req, res, next) ->
+router.get '/signal', measurementLib.validateParameters, (req, res, next) ->
   Measurement.find
     location:
       $geoWithin:
@@ -77,7 +67,7 @@ router.get '/signal', validateParameters, (req, res, next) ->
     )
 
 # get plain measurements with GET /measurement/
-router.get '/', validateParameters, (req, res, next) ->
+router.get '/', measurementLib.validateParameters, (req, res, next) ->
   Measurement.find
     location:
       $geoWithin:
