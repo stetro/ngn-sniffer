@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import com.google.maps.android.heatmaps.Gradient;
 import com.google.maps.android.heatmaps.HeatmapTileProvider;
 import com.google.maps.android.heatmaps.WeightedLatLng;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -42,8 +44,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationChan
     private HeatmapTileProvider heatMapTileProvider;
     private Collection<WeightedLatLng> heatMapPoints = new HashSet<>();
     private TileOverlay heatMapOverlay;
-    private CircleOptions circleOptions;
-    private Circle circle;
+    private ArrayList<Circle> circleArrayList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationChan
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.maps_fragment, container, false);
         initializeMapView(savedInstanceState, v);
+        circleArrayList = new ArrayList<>();
 
         return v;
     }
@@ -72,10 +74,11 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationChan
                 map.setMyLocationEnabled(true);
                 map.setOnCameraChangeListener(MapsFragment.this);
                 map.setOnMyLocationChangeListener(MapsFragment.this);
+                map.setOnMapClickListener(onMapClickListener);
                 TileOverlayOptions options = new TileOverlayOptions().tileProvider(heatMapTileProvider);
                 options.visible(true);
                 heatMapOverlay = map.addTileOverlay(options);
-                updateHeatMapData();
+                updateHeatMapData(5);
                 MapsInitializer.initialize(getActivity());
             }
         });
@@ -94,16 +97,19 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationChan
                 .gradient(gradient)
                 .build();
     }
-
-    private void updateHeatMapData() {
+    List<WeightedLatLng> wLatLngList;
+    private void updateHeatMapData(int r) {
+        final int radius = r;
         LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
         HeatMapDataProvider.getHeatMapData(bounds, new Callback<List<WeightedLatLng>>() {
 
             @Override
             public void success(List<WeightedLatLng> weightedLatLngList, Response response) {
                 if (weightedLatLngList.size() > 0) {
+                    wLatLngList = weightedLatLngList;
                     heatMapTileProvider.setWeightedData(weightedLatLngList);
                     heatMapOverlay.clearTileCache();
+                    //drawMeasurementPoints(weightedLatLngList, radius);
                 }
             }
 
@@ -142,12 +148,13 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationChan
 
     @Override
     public void onCameraChange(CameraPosition cameraPosition) {
-        heatMapTileProvider.setRadius((int) (cameraPosition.zoom * 3));
-        updateHeatMapData();
-        //drawMeasurementPoints();
+        int radius = (int) (cameraPosition.zoom * 3);
+        heatMapTileProvider.setRadius(radius);
+        updateHeatMapData(radius);
+        drawMeasurementPoints(wLatLngList, radius);
     }
 
-    public void drawMeasurementPoints()
+    public void drawMeasurementPoints(List<WeightedLatLng> weightedLatLngList, int radius)
     {
         LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
         HeatMapDataProvider.getHeatMapData(bounds, new Callback<List<WeightedLatLng>>() {
@@ -166,9 +173,40 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationChan
             }
         });
 
-        circleOptions = new CircleOptions().center(bounds.getCenter()).radius(5);
-        circle = map.addCircle(circleOptions);
-        circle.setFillColor(getResources().getColor(R.color.indigo_500));
-        circle.setStrokeWidth(1);
+        //TODO: Clear all circles and redraw with new radius; Circles must be saved in a List
+        if(weightedLatLngList != null)
+        {
+            for(WeightedLatLng weightedLatLng : weightedLatLngList)
+            {
+                CircleOptions circleOptions = new CircleOptions()
+                        .center(new LatLng(weightedLatLng.getPoint().x*10, weightedLatLng.getPoint().y*100))
+                        .radius(radius);
+                Log.d("MapsFragment", "drawMeasurementPoints: x="+weightedLatLng.getPoint().x*10 + " y="+weightedLatLng.getPoint().y*100);
+                //weightedLatLngList.get(0).getPoint().x;
+                Circle circle = map.addCircle(circleOptions);
+                circle.setFillColor(getResources().getColor(R.color.indigo_500));
+                circle.setStrokeWidth(1);
+                circleArrayList.add(circle);
+            }
+        }
     }
+
+    public GoogleMap.OnMapClickListener onMapClickListener = new GoogleMap.OnMapClickListener()
+    {
+        @Override
+        public void onMapClick(LatLng position)
+        {
+            for(Circle circle : circleArrayList)
+            {
+                LatLng center = circle.getCenter();
+                double radius = circle.getRadius();
+                float[] distance = new float[1];
+                Location.distanceBetween(position.latitude, position.longitude, center.latitude, center.longitude, distance);
+                if(distance[0] < radius)
+                {
+                    // TODO: Open info dialog
+                }
+            }
+        }
+    };
 }
