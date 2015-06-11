@@ -106,7 +106,8 @@ application.controller('MapController', function($scope, $http, Measurement) {
       'nelat': $scope.bounds.northEast.lat,
       'nelng': $scope.bounds.northEast.lng,
       'swlat': $scope.bounds.southWest.lat,
-      'swlng': $scope.bounds.southWest.lng
+      'swlng': $scope.bounds.southWest.lng,
+      'edgeOnly': $scope.edgeOnly
     }, function(data) {
       $scope.layers.overlays.signalDBm.data = data;
     });
@@ -142,6 +143,10 @@ application.controller('MapController', function($scope, $http, Measurement) {
   };
 
   $scope.$on('leafletDirectiveMap.moveend', function(event, data) {
+    reloadData();
+  });
+
+  $scope.$watch('edgeOnly',function(oldValue, newValue) {
     reloadData();
   });
 

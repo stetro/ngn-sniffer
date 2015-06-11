@@ -50,14 +50,17 @@ router.get '/wifi', measurementLib.validateParameters, (req, res, next) ->
 
 # get measurements for signal strength with GET /measurement/signal
 router.get '/signal', measurementLib.validateParameters, (req, res, next) ->
-  Measurement.find
+  query = 
     location:
       $geoWithin:
         $box: [
           [ parseFloat(req.query.swlat), parseFloat(req.query.swlng) ]
           [ parseFloat(req.query.nelat), parseFloat(req.query.nelng) ]
         ]
-  , (err, data)->
+  if req.query.edgeOnly == 'true'
+    console.log 'filtering ...'
+    query.type = 'EDGE'
+  Measurement.find query , (err, data)->
     if err
       res.status(500)
       return
