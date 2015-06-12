@@ -31,6 +31,7 @@ import java.util.List;
 
 import de.fhkoeln.ngn.R;
 import de.fhkoeln.ngn.data.HeatMapDataProvider;
+import de.fhkoeln.ngn.data.Measurement;
 import de.fhkoeln.ngn.service.event.LocationChangedEvent;
 import de.greenrobot.event.EventBus;
 import retrofit.Callback;
@@ -154,9 +155,32 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationChan
         drawMeasurementPoints(wLatLngList, radius);
     }
 
+    ArrayList<Measurement> measurementPoints;
+    Measurement m;
     public void drawMeasurementPoints(List<WeightedLatLng> weightedLatLngList, int radius)
     {
         LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
+        HeatMapDataProvider.getMeasurements(bounds, false, new Callback<List<Measurement>>() {
+
+            @Override
+            public void success(List<Measurement> measurements, Response response) {
+                measurementPoints = new ArrayList<>(measurements);
+                Log.d("MapsFragment", "drawMeasurementPoints: "+measurements.size());
+                if(measurements.size() >0)
+                {
+                    for(Measurement m : measurements)
+                    {
+                        Log.d("MapsFragment", "drawMeasurementPoints: Lat="+m.getLat() + " Lng="+m.getLng() + " Signal DBm: "+m.getSignalDBm() + "Type: "+m.getType()+ "APs: "+m.getWifiAPs());
+                    }
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+
         HeatMapDataProvider.getHeatMapData(bounds, new Callback<List<WeightedLatLng>>() {
 
             @Override
@@ -174,15 +198,15 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationChan
         });
 
         //TODO: Clear all circles and redraw with new radius; Circles must be saved in a List
-        if(weightedLatLngList != null)
+        if(m != null)
         {
-            for(WeightedLatLng weightedLatLng : weightedLatLngList)
+            //for(Measurement measurement : measurementPoints)
             {
                 CircleOptions circleOptions = new CircleOptions()
-                        .center(new LatLng(weightedLatLng.getPoint().x*10, weightedLatLng.getPoint().y*100))
-                        .radius(radius);
-                Log.d("MapsFragment", "drawMeasurementPoints: x="+weightedLatLng.getPoint().x*10 + " y="+weightedLatLng.getPoint().y*100);
-                //weightedLatLngList.get(0).getPoint().x;
+                        .center(new LatLng(m.getLat(), m.getLng()))
+                        .radius(5);
+                //Log.d("MapsFragment", "drawMeasurementPoints: Lat="+m.getLat() + " Lng="+m.getLng());
+
                 Circle circle = map.addCircle(circleOptions);
                 circle.setFillColor(getResources().getColor(R.color.indigo_500));
                 circle.setStrokeWidth(1);
