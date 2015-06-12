@@ -38,6 +38,15 @@ public class HeatMapDataProvider {
                 cb);
     }
 
+    public static void getMeasurements(LatLngBounds bounds, boolean edgeOnly, final Callback<List<Measurement>> callback) {
+        HeatMapDataService heatMapDataService = getRestAdapter().create(HeatMapDataService.class);
+        heatMapDataService.getMeasurements(
+                bounds.northeast.latitude, bounds.northeast.longitude,
+                bounds.southwest.latitude, bounds.southwest.longitude,
+                edgeOnly,
+                callback);
+    }
+
     private static ArrayList<WeightedLatLng> convertPointList(List<List<Double>> lists) {
         ArrayList<WeightedLatLng> latLngArrayList = new ArrayList<>();
         for (List<Double> point : lists) {
@@ -70,4 +79,5 @@ public class HeatMapDataProvider {
             }
         });
     }
+
 }

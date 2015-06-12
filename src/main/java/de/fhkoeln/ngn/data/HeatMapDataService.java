@@ -22,4 +22,11 @@ public interface HeatMapDataService {
     void saveNewMeasurement(@Body Measurement measurement, Callback<Measurement> cb);
 
 
+    @GET("/measurement")
+    void getMeasurements(
+            @Query("nelat") double nelat,
+            @Query("nelng") double nelng,
+            @Query("swlat") double swlat,
+            @Query("swlng") double swlng,
+            @Query("edgeOnly") boolean edgeOnly, Callback<List<Measurement>> cb);
 }
