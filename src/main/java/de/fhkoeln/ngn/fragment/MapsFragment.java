@@ -8,7 +8,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.gc.materialdesign.views.ButtonRectangle;
+import com.gc.materialdesign.widgets.Dialog;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
@@ -42,10 +45,13 @@ import retrofit.client.Response;
 public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationChangeListener, GoogleMap.OnCameraChangeListener {
     private MapView mapView;
     private GoogleMap map;
+    private ButtonRectangle gsmWifiButton;
     private HeatmapTileProvider heatMapTileProvider;
     private Collection<WeightedLatLng> heatMapPoints = new HashSet<>();
     private TileOverlay heatMapOverlay;
+    private ArrayList<Measurement> measurementPoints;
     private ArrayList<Circle> circleArrayList;
+    private boolean showGSM = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,6 +63,8 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationChan
         View v = inflater.inflate(R.layout.maps_fragment, container, false);
         initializeMapView(savedInstanceState, v);
         circleArrayList = new ArrayList<>();
+        gsmWifiButton = (ButtonRectangle) v.findViewById(R.id.gsm_wifi_button);
+        gsmWifiButton.setOnClickListener(gsmWifiListener);
 
         return v;
     }
@@ -76,9 +84,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationChan
                 map.setOnCameraChangeListener(MapsFragment.this);
                 map.setOnMyLocationChangeListener(MapsFragment.this);
                 map.setOnMapClickListener(onMapClickListener);
-                TileOverlayOptions options = new TileOverlayOptions().tileProvider(heatMapTileProvider);
-                options.visible(true);
-                heatMapOverlay = map.addTileOverlay(options);
+                initializeHeatMap();
                 updateHeatMapData(5);
                 MapsInitializer.initialize(getActivity());
             }
@@ -98,27 +104,36 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationChan
                 .gradient(gradient)
                 .build();
     }
-    List<WeightedLatLng> wLatLngList;
+
     private void updateHeatMapData(int r) {
-        final int radius = r;
         LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
-        HeatMapDataProvider.getHeatMapData(bounds, new Callback<List<WeightedLatLng>>() {
 
-            @Override
-            public void success(List<WeightedLatLng> weightedLatLngList, Response response) {
-                if (weightedLatLngList.size() > 0) {
-                    wLatLngList = weightedLatLngList;
-                    heatMapTileProvider.setWeightedData(weightedLatLngList);
-                    heatMapOverlay.clearTileCache();
-                    //drawMeasurementPoints(weightedLatLngList, radius);
+        if(showGSM)
+        {
+            HeatMapDataProvider.getHeatMapData(bounds, new Callback<List<WeightedLatLng>>() {
+
+                @Override
+                public void success(List<WeightedLatLng> weightedLatLngList, Response response) {
+                    if (weightedLatLngList.size() > 0) {
+                        initializeHeatMap();
+                        heatMapTileProvider.setWeightedData(weightedLatLngList);
+                        heatMapOverlay.clearTileCache();
+                    }
                 }
-            }
 
-            @Override
-            public void failure(RetrofitError error) {
+                @Override
+                public void failure(RetrofitError error) {
 
-            }
-        });
+                }
+            });
+        }
+        else
+        {
+            //TODO: Add method to get and show WiFi data
+            //heatMapOverlay.remove();
+            //initializeHeatMap();
+        }
+
     }
 
     @Override
@@ -152,12 +167,10 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationChan
         int radius = (int) (cameraPosition.zoom * 3);
         heatMapTileProvider.setRadius(radius);
         updateHeatMapData(radius);
-        drawMeasurementPoints(wLatLngList, radius);
+        drawMeasurementPoints(radius);
     }
 
-    ArrayList<Measurement> measurementPoints;
-    Measurement m;
-    public void drawMeasurementPoints(List<WeightedLatLng> weightedLatLngList, int radius)
+    public void drawMeasurementPoints(int radius)
     {
         LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
         HeatMapDataProvider.getMeasurements(bounds, false, new Callback<List<Measurement>>() {
@@ -166,11 +179,13 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationChan
             public void success(List<Measurement> measurements, Response response) {
                 measurementPoints = new ArrayList<>(measurements);
                 Log.d("MapsFragment", "drawMeasurementPoints: "+measurements.size());
-                if(measurements.size() >0)
+                if(measurements.size() > 0)
                 {
                     for(Measurement m : measurements)
                     {
-                        Log.d("MapsFragment", "drawMeasurementPoints: Lat="+m.getLat() + " Lng="+m.getLng() + " Signal DBm: "+m.getSignalDBm() + "Type: "+m.getType()+ "APs: "+m.getWifiAPs());
+                        Log.d("MapsFragment", "drawMeasurementPoints: Lat="+m.getLat() +
+                                " Lng="+m.getLng() + " Signal DBm: " + m.getSignalDBm() +
+                                " Type: "+m.getType()+ " APs: "+m.getWifiAPs());
                     }
                 }
             }
@@ -181,31 +196,15 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationChan
             }
         });
 
-        HeatMapDataProvider.getHeatMapData(bounds, new Callback<List<WeightedLatLng>>() {
-
-            @Override
-            public void success(List<WeightedLatLng> weightedLatLngList, Response response) {
-                if (weightedLatLngList.size() > 0) {
-                    heatMapTileProvider.setWeightedData(weightedLatLngList);
-                    heatMapOverlay.clearTileCache();
-                }
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-
-            }
-        });
-
         //TODO: Clear all circles and redraw with new radius; Circles must be saved in a List
-        if(m != null)
+        if(measurementPoints != null)
         {
-            //for(Measurement measurement : measurementPoints)
+            for(Measurement measurement : measurementPoints)
             {
                 CircleOptions circleOptions = new CircleOptions()
-                        .center(new LatLng(m.getLat(), m.getLng()))
+                        .center(new LatLng(measurement.getLat(), measurement.getLng()))
                         .radius(5);
-                //Log.d("MapsFragment", "drawMeasurementPoints: Lat="+m.getLat() + " Lng="+m.getLng());
+                Log.d("MapsFragment", "drawMeasurementPoints: Lat="+measurement.getLat() + " Lng="+measurement.getLng());
 
                 Circle circle = map.addCircle(circleOptions);
                 circle.setFillColor(getResources().getColor(R.color.indigo_500));
@@ -213,6 +212,13 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationChan
                 circleArrayList.add(circle);
             }
         }
+    }
+
+    public void initializeHeatMap()
+    {
+        TileOverlayOptions options = new TileOverlayOptions().tileProvider(heatMapTileProvider);
+        options.visible(true);
+        heatMapOverlay = map.addTileOverlay(options);
     }
 
     public GoogleMap.OnMapClickListener onMapClickListener = new GoogleMap.OnMapClickListener()
@@ -229,8 +235,32 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationChan
                 if(distance[0] < radius)
                 {
                     // TODO: Open info dialog
+                    new Dialog(getActivity(), "Measurement point", "message").show();
                 }
             }
+        }
+    };
+
+    public View.OnClickListener gsmWifiListener = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(View v)
+        {
+            if(showGSM)
+            {
+                showGSM = false;
+                gsmWifiButton.setText(getResources().getString(R.string.toggle_gsm));
+                Toast.makeText(getActivity(), "Showing WiFi Heatmap", Toast.LENGTH_LONG).show();
+            }
+            else
+            {
+                showGSM = true;
+                gsmWifiButton.setText(getResources().getString(R.string.toggle_wifi));
+                Toast.makeText(getActivity(), "Showing GSM Heatmap", Toast.LENGTH_LONG).show();
+
+            }
+            heatMapOverlay.remove();
+            updateHeatMapData(5);
         }
     };
 }

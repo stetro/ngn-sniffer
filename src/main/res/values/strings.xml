@@ -30,4 +30,6 @@
     <string name="signal">Signal</string>
     <string name="description">description</string>
     <string name="save_measurement">Save Measurement</string>
+    <string name="toggle_wifi">Show WiFi</string>
+    <string name="toggle_gsm">Show GSM</string>
 </resources>
