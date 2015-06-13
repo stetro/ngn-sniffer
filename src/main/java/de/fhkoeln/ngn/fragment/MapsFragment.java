@@ -226,7 +226,33 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationChan
         @Override
         public void onMapClick(LatLng position)
         {
-            for(Circle circle : circleArrayList)
+            Log.d("MapsFragment", "OnMapClickListener: Lat=" + position.latitude + " Lng=" + position.longitude);
+            LatLng southWest = new LatLng(position.latitude-0.0005, position.longitude-0.0005);
+            LatLng northEast = new LatLng(position.latitude+0.0005, position.longitude+0.0005);
+            LatLngBounds llBounds = new LatLngBounds(southWest, northEast);
+            HeatMapDataProvider.getMeasurements(llBounds, false, new Callback<List<Measurement>>() {
+
+            @Override
+            public void success(List<Measurement> measurements, Response response) {
+                measurementPoints = new ArrayList<>(measurements);
+                Log.d("MapsFragment", "onMapClick: "+measurements.size());
+                if(measurements.size() > 0)
+                {
+                    String info = "Lat: "+ measurements.get(0).getLat()+
+                            "\nLng: "+measurements.get(0).getLng()+
+                            "\nType: "+measurements.get(0).getType()+
+                            "\nSignal dBm: "+measurements.get(0).getSignalDBm()+
+                            "\nWiFi APs: "+measurements.get(0).getWifiAPs();
+                    new Dialog(getActivity(), "Details", info).show();
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+            /*for(Circle circle : circleArrayList)
             {
                 LatLng center = circle.getCenter();
                 double radius = circle.getRadius();
@@ -237,7 +263,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationChan
                     // TODO: Open info dialog
                     new Dialog(getActivity(), "Measurement point", "message").show();
                 }
-            }
+            }*/
         }
     };
 
