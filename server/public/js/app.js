@@ -1,6 +1,6 @@
 'use strict';
 
-var application = angular.module('ngn', ['leaflet-directive', 'ngResource']);
+var application = angular.module('ngn', ['leaflet-directive', 'ngResource', 'frapontillo.bootstrap-switch']);
 
 application.factory('Measurement', function($resource) {
   return $resource('/measurement', {}, {
@@ -70,18 +70,10 @@ application.controller('MapController', function($scope, $http, Measurement) {
           type: 'google'
         }
       }
-    }
+    },
+    cellular:true
   });
   $scope.layers.overlays = {
-    wifiAPs: {
-      name: 'Wifi APs',
-      type: 'heatmap',
-      data: dataPoints,
-      visible: false,
-      layerOptions: {
-        size: 250
-      }
-    },
     signalDBm: {
       name: 'Mobile Connectivity',
       type: 'heatmap',
@@ -94,23 +86,28 @@ application.controller('MapController', function($scope, $http, Measurement) {
   };
 
   var reloadData = function() {
-    Measurement.getWifiPoints({
-      'nelat': $scope.bounds.northEast.lat,
-      'nelng': $scope.bounds.northEast.lng,
-      'swlat': $scope.bounds.southWest.lat,
-      'swlng': $scope.bounds.southWest.lng
-    }, function(data) {
-      $scope.layers.overlays.wifiAPs.data = data;
-    });
-    Measurement.getSignalPoints({
-      'nelat': $scope.bounds.northEast.lat,
-      'nelng': $scope.bounds.northEast.lng,
-      'swlat': $scope.bounds.southWest.lat,
-      'swlng': $scope.bounds.southWest.lng,
-      'edgeOnly': $scope.edgeOnly
-    }, function(data) {
-      $scope.layers.overlays.signalDBm.data = data;
-    });
+    if ($scope.cellular) {
+      Measurement.getSignalPoints({
+        'nelat': $scope.bounds.northEast.lat,
+        'nelng': $scope.bounds.northEast.lng,
+        'swlat': $scope.bounds.southWest.lat,
+        'swlng': $scope.bounds.southWest.lng,
+        'edgeOnly': $scope.edgeOnly
+      }, function(data) {
+        $scope.layers.overlays.signalDBm.data = data;
+      });
+    } else {
+      Measurement.getWifiPoints({
+        'nelat': $scope.bounds.northEast.lat,
+        'nelng': $scope.bounds.northEast.lng,
+        'swlat': $scope.bounds.southWest.lat,
+        'swlng': $scope.bounds.southWest.lng,
+        'edgeOnly': $scope.edgeOnly
+      }, function(data) {
+        $scope.layers.overlays.signalDBm.data = data;
+      });
+    }
+
   };
 
   var getLocation = function() {
@@ -146,7 +143,11 @@ application.controller('MapController', function($scope, $http, Measurement) {
     reloadData();
   });
 
-  $scope.$watch('edgeOnly',function(oldValue, newValue) {
+  $scope.$watch('edgeOnly', function(oldValue, newValue) {
+    reloadData();
+  });
+
+  $scope.$watch('cellular',function(oldValue, newValue) {
     reloadData();
   });
 

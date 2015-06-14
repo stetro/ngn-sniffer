@@ -30,10 +30,12 @@ block content
             .form-group(id='search')
               input.form-control(type='text', ng-model='search', placeholder='Search Location ...')
               i.glyphicon.glyphicon-search(id='search-icon')
-          .checkbox
-            label
-              input(type='checkbox', ng-model='edgeOnly')
-              | EDGE only
+          input(bs-switch ng-model='cellular' type='radio' switch-off-text='Wifi' switch-on-text='Cellular' switch-label='Type')
+          .checkbox(ng-if='cellular')
+              label
+                input(type='checkbox', ng-model='edgeOnly')
+                | EDGE only
+          
 
     .col-md-9
       .well
