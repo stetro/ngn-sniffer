@@ -241,7 +241,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationChan
                     String info = "Lat: "+ measurements.get(0).getLat()+
                             "\nLng: "+measurements.get(0).getLng()+
                             "\nType: "+measurements.get(0).getType()+
-                            "\nSignal dBm: "+measurements.get(0).getSignalDBm()+
+                            "\nSignal dBm: "+((measurements.get(0).getSignalDBm() <= 0) ? -113 : measurements.get(0).getSignalDBm() * 2 - 113)+
                             "\nWiFi APs: "+measurements.get(0).getWifiAPs();
                     new Dialog(getActivity(), "Details", info).show();
                 }

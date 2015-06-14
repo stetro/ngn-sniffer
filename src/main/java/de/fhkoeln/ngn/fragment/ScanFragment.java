@@ -122,7 +122,7 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
     public void onEvent(CellularResultEvent e) {
         cellularLayout.setVisibility(View.VISIBLE);
         cellularLateResult.setText(CellularUtil.getLTEInfo(e));
-        cellularRegisteredCellInfo.setText(CellularUtil.getAllInfo(e));
+        cellularRegisteredCellInfo.setText(CellularUtil.getCellLocation(e)+"\n"+CellularUtil.getAllInfo(e));
         cellularNeighboringCellsInfo.setText(CellularUtil.getNeighboringCellInfo(e));
     }
 

@@ -18,23 +18,29 @@ import android.telephony.CellSignalStrengthLte;
 import android.telephony.CellSignalStrengthWcdma;
 import android.telephony.NeighboringCellInfo;
 import android.telephony.TelephonyManager;
+import android.telephony.cdma.CdmaCellLocation;
+import android.telephony.gsm.GsmCellLocation;
+import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.fhkoeln.ngn.service.CellularService;
 import de.fhkoeln.ngn.service.event.CellularResultEvent;
-
 
 public class CellularUtil {
 
 
     public static String getLTEInfo(CellularResultEvent e) {
         StringBuilder sb = new StringBuilder();
-        if (e.getLTECells() != null) {
-            for (CellInfo cellInfo : e.getLTECells()) {
+        ArrayList<CellInfo> cellInfoList = null;
+        if(e.getLTECells() != null) cellInfoList = new ArrayList<>(e.getLTECells());
+
+        if (cellInfoList != null) {
+            Log.d("CellularUtil", "LTE cells: "+e.getLTECells().size());
+            for (CellInfo cellInfo : cellInfoList) {
                 long timeStamp = cellInfo.getTimeStamp();
                 boolean registered = cellInfo.isRegistered();
-
 
                 if(cellInfo instanceof CellInfoGsm)
                 {
@@ -125,12 +131,11 @@ public class CellularUtil {
         List<NeighboringCellInfo> nci = e.getTelephonyManager().getNeighboringCellInfo();
 
         for (NeighboringCellInfo neighboringCellInfo : nci) {
-            sb.append("Neighboring Cell Info: ").append(neighboringCellInfo.describeContents()).append("\n")
-                    .append("CID: ").append(neighboringCellInfo.getCid()).append("\n")
+            sb.append("CID: ").append(neighboringCellInfo.getCid()).append("\n")
                     .append("LAC: ").append(neighboringCellInfo.getLac()).append("\n")
-                    .append("Network Type: ").append(neighboringCellInfo.getNetworkType()).append("\n")
+                    .append("Network Type: ").append(getNetworkType(neighboringCellInfo.getNetworkType())).append("\n")
                     .append("PSC: ").append(neighboringCellInfo.getPsc()).append("\n")
-                    .append("RSSI: ").append(neighboringCellInfo.getRssi()).append("\n\n");
+                    .append("RSSI: ").append(neighboringCellInfo.getRssi()).append(" dBm\n\n");
         }
         return sb.toString();
     }
@@ -304,11 +309,66 @@ public class CellularUtil {
         }
     }
 
+    public static String getNetworkType(int networkType) {
+        switch (networkType) {
+            case TelephonyManager.NETWORK_TYPE_1xRTT:
+                return "1xRTT ";
+            case TelephonyManager.NETWORK_TYPE_CDMA:
+                return "CDMA";
+            case TelephonyManager.NETWORK_TYPE_EDGE:
+                return "EDGE";
+            case TelephonyManager.NETWORK_TYPE_EHRPD:
+                return "eHRPD";
+            case TelephonyManager.NETWORK_TYPE_EVDO_0:
+                return "EVDO-0";
+            case TelephonyManager.NETWORK_TYPE_EVDO_A:
+                return "EVDO-A";
+            case TelephonyManager.NETWORK_TYPE_EVDO_B:
+                return "EVDO-B ";
+            case TelephonyManager.NETWORK_TYPE_GPRS:
+                return "GPRS";
+            case TelephonyManager.NETWORK_TYPE_HSDPA:
+                return "HSDPA";
+            case TelephonyManager.NETWORK_TYPE_HSPA:
+                return "HSPA";
+            case TelephonyManager.NETWORK_TYPE_HSPAP:
+                return "HSPA+";
+            case TelephonyManager.NETWORK_TYPE_HSUPA:
+                return "HSUPA";
+            case TelephonyManager.NETWORK_TYPE_IDEN:
+                return "iDen";
+            case TelephonyManager.NETWORK_TYPE_LTE:
+                return "LTE";
+            case TelephonyManager.NETWORK_TYPE_UMTS:
+                return "UMTS";
+            default:
+                return "unknown";
+        }
+    }
+
     public static String getCellLocation(CellularResultEvent e)
     {
         CellLocation cellLocation = e.getCellularCell();
-        //TODO: Was kann man damit anfange???
-        return cellLocation.toString();
+        StringBuilder sb = new StringBuilder();
+        if(cellLocation instanceof GsmCellLocation)
+        {
+            GsmCellLocation gsmCellLocation = (GsmCellLocation) cellLocation;
+            sb.append("Cid: ").append(gsmCellLocation.getCid())
+              .append("\nLac: ").append(gsmCellLocation.getLac())
+              .append("\nPsc: ").append(gsmCellLocation.getPsc());
+        }
+
+        if(cellLocation instanceof CdmaCellLocation)
+        {
+            CdmaCellLocation cdmaCellLocation = (CdmaCellLocation) cellLocation;
+            sb.append("Base station ID: ").append(cdmaCellLocation.getBaseStationId())
+                    .append("\nBase station Lat: ").append(cdmaCellLocation.getBaseStationLatitude())
+                    .append("\nBase station Lng: ").append(cdmaCellLocation.getBaseStationLongitude())
+                    .append("\nNetwork ID: ").append(cdmaCellLocation.getNetworkId())
+                    .append("\nSystem ID: ").append(cdmaCellLocation.getSystemId());
+        }
+
+        return sb.toString();
     }
 
 }

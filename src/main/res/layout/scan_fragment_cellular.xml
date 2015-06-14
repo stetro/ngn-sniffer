@@ -49,13 +49,15 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/cellular_info_title"
-            android:textAppearance="@android:style/TextAppearance.Medium" />
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:visibility="visible" />
 
         <TextView
             android:id="@+id/scan_fragment_cellular_lte_info"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@android:style/TextAppearance.Small" />
+            android:textAppearance="@android:style/TextAppearance.Small"
+            android:visibility="visible" />
 
         <TextView
             android:id="@+id/scan_fragment_cellular_registeredcell_info_title"
