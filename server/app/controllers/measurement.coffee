@@ -44,7 +44,10 @@ router.get '/wifi', measurementLib.validateParameters, (req, res, next) ->
       res.status(500)
       return
     res.json(data.map (item) ->
-      return [item.location.coordinates[0], item.location.coordinates[1], 0.5]
+      if(parseFloat(item.wifiAPs) < 8.0)
+        return [item.location.coordinates[0], item.location.coordinates[1], parseFloat(item.wifiAPs)/8.0]
+      else
+        return [item.location.coordinates[0], item.location.coordinates[1], 1.0]
     )
   )
 
