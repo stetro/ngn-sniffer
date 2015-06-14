@@ -101,8 +101,7 @@ application.controller('MapController', function($scope, $http, Measurement) {
         'nelat': $scope.bounds.northEast.lat,
         'nelng': $scope.bounds.northEast.lng,
         'swlat': $scope.bounds.southWest.lat,
-        'swlng': $scope.bounds.southWest.lng,
-        'edgeOnly': $scope.edgeOnly
+        'swlng': $scope.bounds.southWest.lng
       }, function(data) {
         $scope.layers.overlays.signalDBm.data = data;
       });
@@ -144,7 +143,8 @@ application.controller('MapController', function($scope, $http, Measurement) {
   });
 
   $scope.$watch('edgeOnly', function(oldValue, newValue) {
-    reloadData();
+    console.log('foo')
+    reloadData();  
   });
 
   $scope.$watch('cellular',function(oldValue, newValue) {
