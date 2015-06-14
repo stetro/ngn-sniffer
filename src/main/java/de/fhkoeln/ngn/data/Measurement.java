@@ -1,5 +1,6 @@
 package de.fhkoeln.ngn.data;
 
+import java.util.Arrays;
 
 public class Measurement {
     private double lat = 0;
@@ -8,12 +9,15 @@ public class Measurement {
     private int signalDBm = 0;
     private int wifiAPs = 0;
 
+    private PointLocation location;
+
     public Measurement(double lat, double lng, String type, int signalDBm, int wifiAPs) {
         this.lat = lat;
         this.lng = lng;
         this.type = type;
         this.signalDBm = signalDBm;
         this.wifiAPs = wifiAPs;
+        this.location = new PointLocation("Point", Arrays.asList(lat, lng));
     }
 
     public Measurement() {
@@ -21,7 +25,10 @@ public class Measurement {
     }
 
     public double getLat() {
-        return lat;
+        if (location != null)
+            return location.getLat();
+        else
+            return lat;
     }
 
     public void setLat(double lat) {
@@ -29,7 +36,10 @@ public class Measurement {
     }
 
     public double getLng() {
-        return lng;
+        if (location != null)
+            return location.getLng();
+        else
+            return lng;
     }
 
     public void setLng(double lng) {
@@ -58,5 +68,9 @@ public class Measurement {
 
     public void setWifiAPs(int wifiAPs) {
         this.wifiAPs = wifiAPs;
+    }
+
+    public PointLocation getLocation() {
+        return location;
     }
 }
