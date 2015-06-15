@@ -30,11 +30,14 @@ block content
             .form-group(id='search')
               input.form-control(type='text', ng-model='search', placeholder='Search Location ...')
               i.glyphicon.glyphicon-search(id='search-icon')
-          input(bs-switch ng-model='cellular' type='radio' switch-off-text='Wifi' switch-on-text='Cellular' switch-label='Type')
-          .checkbox(ng-show='cellular')
-              label
-                input(type='checkbox', ng-model='edgeOnly')
-                | EDGE only
+        .panel-footer
+          input(bs-switch ng-model='cellular' type='radio' switch-off-text='Wifi' switch-on-text='Cellular' switch-label='Type' switch-label-width='100' switch-handle-width='80')
+          div(ng-show='cellular')
+            .checkbox(ng-repeat='type in types')
+                label
+                  input(type='checkbox', name='selectedTypes[]', ng-checked='filterSelection.indexOf(type) > -1', ng-click='toggleFilterSelection(type)')
+                  | {{type}}
+
           
 
     .col-md-9

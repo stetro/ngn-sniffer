@@ -25,7 +25,8 @@ application.controller('MapController', function($scope, $http, Measurement) {
       signalDBm: 15,
       wifiAPs: 1
     },
-    types: ['CDMA', 'EDGE', 'GSM', 'LTE'],
+    types: ['EDGE', 'HSDPA+', 'LTE'],
+    filterSelection: [],
     bounds: {
       northEast: {
         lat: 50.9412313855822,
@@ -71,7 +72,7 @@ application.controller('MapController', function($scope, $http, Measurement) {
         }
       }
     },
-    cellular:true
+    cellular: true
   });
   $scope.layers.overlays = {
     signalDBm: {
@@ -92,7 +93,7 @@ application.controller('MapController', function($scope, $http, Measurement) {
         'nelng': $scope.bounds.northEast.lng,
         'swlat': $scope.bounds.southWest.lat,
         'swlng': $scope.bounds.southWest.lng,
-        'edgeOnly': $scope.edgeOnly
+        'filter': $scope.filterSelection.join(',')
       }, function(data) {
         $scope.layers.overlays.signalDBm.data = data;
       });
@@ -116,6 +117,15 @@ application.controller('MapController', function($scope, $http, Measurement) {
         $scope.center.lng = position.coords.longitude;
       });
     });
+  };
+
+  $scope.toggleFilterSelection = function(type) {
+    var idx = $scope.filterSelection.indexOf(type);
+    if (idx > -1) {
+      $scope.filterSelection.splice(idx, 1);
+    } else {
+      $scope.filterSelection.push(type);
+    }
   };
 
   $scope.updateMarkerPosition = function() {
@@ -142,12 +152,11 @@ application.controller('MapController', function($scope, $http, Measurement) {
     reloadData();
   });
 
-  $scope.$watch('edgeOnly', function(oldValue, newValue) {
-    console.log('foo')
-    reloadData();  
-  });
+  $scope.$watch('filterSelection', function(oldValue, newValue) {
+    reloadData();
+  }, true);
 
-  $scope.$watch('cellular',function(oldValue, newValue) {
+  $scope.$watch('cellular', function(oldValue, newValue) {
     reloadData();
   });
 

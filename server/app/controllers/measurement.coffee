@@ -60,9 +60,11 @@ router.get '/signal', measurementLib.validateParameters, (req, res, next) ->
           [ parseFloat(req.query.swlat), parseFloat(req.query.swlng) ]
           [ parseFloat(req.query.nelat), parseFloat(req.query.nelng) ]
         ]
-  if req.query.edgeOnly == 'true'
+  if req.query.filter != undefined && req.query.filter.length > 0
     console.log 'filtering ...'
-    query.type = 'EDGE'
+    query.type = {
+      '$in': req.query.filter.split ','
+    }
   Measurement.find query , (err, data)->
     if err
       res.status(500)

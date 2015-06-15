@@ -30,7 +30,7 @@ To run the server you need the following things:
 |----------|--------|-----------|---------|-------------|
 | `http://host/measurement` | GET | nelat:double, nelng:double, swlat:double, swlng:double | JSON Array | Get measurements of a certain area |
 | `http://host/measurement` | POST | lat:double, lng:double, type:varchar, signalDBm:int, wifiAPs:int | JSON Array | Save measurement |
-| `http://host/measurement/signal` | GET | nelat:double, nelng:double, swlat:double, swlng:double, edgeOnly:boolean | JSON Array | Load weighted heatmap points for signal strength |
+| `http://host/measurement/signal` | GET | nelat:double, nelng:double, swlat:double, swlng:double, filter:varchar-array | JSON Array | Load weighted heatmap points for signal strength |
 | `http://host/measurement/wifi` | GET | nelat:double, nelng:double, swlat:double, swlng:double | JSON Array | Load weighted heatmap points for wifi access points |
 
 
