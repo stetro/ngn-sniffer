@@ -25,7 +25,7 @@ application.controller('MapController', function($scope, $http, Measurement) {
       signalDBm: 15,
       wifiAPs: 1
     },
-    types: ['EDGE', 'HSDPA+', 'LTE'],
+    types: ['EDGE', 'HSPA', 'HSPA+', 'LTE'],
     filterSelection: [],
     bounds: {
       northEast: {

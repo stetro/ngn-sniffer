@@ -61,7 +61,6 @@ router.get '/signal', measurementLib.validateParameters, (req, res, next) ->
           [ parseFloat(req.query.nelat), parseFloat(req.query.nelng) ]
         ]
   if req.query.filter != undefined && req.query.filter.length > 0
-    console.log 'filtering ...'
     query.type = {
       '$in': req.query.filter.split ','
     }
