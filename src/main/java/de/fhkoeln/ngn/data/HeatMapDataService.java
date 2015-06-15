@@ -29,4 +29,11 @@ public interface HeatMapDataService {
             @Query("swlat") double swlat,
             @Query("swlng") double swlng,
             @Query("edgeOnly") boolean edgeOnly, Callback<List<Measurement>> cb);
+
+    @GET("/measurement/wifi")
+    void getWifiHeatmapPoints(@Query("nelat") double nelat,
+                              @Query("nelng") double nelng,
+                              @Query("swlat") double swlat,
+                              @Query("swlng") double swlng,
+                              Callback<List<List<Double>>> cb);
 }

@@ -17,15 +17,6 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" />
 
-        <com.gc.materialdesign.views.ButtonRectangle
-            android:id="@+id/gsm_wifi_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/toggle_wifi"
-            android:background="@color/primary"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-        />
 
     </FrameLayout>
 

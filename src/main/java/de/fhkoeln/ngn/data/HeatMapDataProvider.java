@@ -17,7 +17,7 @@ public class HeatMapDataProvider {
 
     private static RestAdapter restAdapter;
 
-    public static void getHeatMapData(LatLngBounds bounds, final Callback<List<WeightedLatLng>> callback) {
+    public static void getHeatMapGSMData(LatLngBounds bounds, final Callback<List<WeightedLatLng>> callback) {
 
         Callback<List<List<Double>>> cb = new Callback<List<List<Double>>>() {
             @Override
@@ -33,6 +33,27 @@ public class HeatMapDataProvider {
 
         HeatMapDataService heatMapDataService = getRestAdapter().create(HeatMapDataService.class);
         heatMapDataService.getSignalHeatmapPoints(
+                bounds.northeast.latitude, bounds.northeast.longitude,
+                bounds.southwest.latitude, bounds.southwest.longitude,
+                cb);
+    }
+
+    public static void getHeatMapWifiData(LatLngBounds bounds, final Callback<List<WeightedLatLng>> callback) {
+
+        Callback<List<List<Double>>> cb = new Callback<List<List<Double>>>() {
+            @Override
+            public void success(List<List<Double>> lists, Response response) {
+                callback.success(convertPointList(lists), response);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                callback.failure(error);
+            }
+        };
+
+        HeatMapDataService heatMapDataService = getRestAdapter().create(HeatMapDataService.class);
+        heatMapDataService.getWifiHeatmapPoints(
                 bounds.northeast.latitude, bounds.northeast.longitude,
                 bounds.southwest.latitude, bounds.southwest.longitude,
                 cb);

@@ -2,8 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/menu_save_measurement"
-        android:icon="@drawable/upload"
-        android:title="@string/save_measurement"
-        app:showAsAction="ifRoom" />
+        android:id="@+id/mapsSwitchItem"
+        android:title="@string/cellular"
+        app:showAsAction="always"
+        app:actionLayout="@layout/map_switch"
+        />
 </menu>

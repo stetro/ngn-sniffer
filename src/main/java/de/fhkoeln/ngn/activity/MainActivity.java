@@ -4,29 +4,35 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+
+import com.gc.materialdesign.views.Switch;
 
 import de.fhkoeln.ngn.R;
-import de.fhkoeln.ngn.data.HeatMapDataProvider;
 import de.fhkoeln.ngn.fragment.MapsFragment;
-import de.fhkoeln.ngn.fragment.SmallDetailFragment;
 import de.fhkoeln.ngn.service.BluetoothService;
 import de.fhkoeln.ngn.service.CellularService;
 import de.fhkoeln.ngn.service.LocationService;
 import de.fhkoeln.ngn.service.WifiService;
+import de.fhkoeln.ngn.service.event.ShowGSMHeatMapEvent;
+import de.fhkoeln.ngn.service.event.ShowWifiHeatMapEvent;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.NoSubscriberEvent;
 
 public class MainActivity extends BaseActivity {
     private ActionBarDrawerToggle drawerToggle;
     private DrawerLayout drawerLayout;
+    private TextView mapsSwitchTextView;
+    private Switch mapsSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +47,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.menu_save_measurement){
-            HeatMapDataProvider.saveMeasurement(SmallDetailFragment.getMeasurement());
-        }
+        Log.d("ACTION", item.getItemId() + "");
         return drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
@@ -61,7 +65,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(Gravity.START)) {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawers();
             return;
         }
@@ -72,6 +76,21 @@ public class MainActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
+        View actionView = menu.findItem(R.id.mapsSwitchItem).getActionView();
+        mapsSwitchTextView = (TextView) actionView.findViewById(R.id.mapsSwitchText);
+        mapsSwitch = (Switch) actionView.findViewById(R.id.mapsSwitch);
+        mapsSwitch.setOncheckListener(new Switch.OnCheckListener() {
+            @Override
+            public void onCheck(boolean b) {
+                if (b) {
+                    mapsSwitchTextView.setText(R.string.wifi);
+                    EventBus.getDefault().post(new ShowWifiHeatMapEvent());
+                } else {
+                    mapsSwitchTextView.setText(R.string.cellular);
+                    EventBus.getDefault().post(new ShowGSMHeatMapEvent());
+                }
+            }
+        });
         return super.onCreateOptionsMenu(menu);
     }
 
