@@ -134,6 +134,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationChan
         LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
         initializeHeatMapTileProvider();
         heatMapOverlay.remove();
+        map.clear();
         initializeHeatMap();
 
         if (showGSM) {
@@ -201,7 +202,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationChan
         int radius = (int) (cameraPosition.zoom * 3);
         heatMapTileProvider.setRadius(radius);
         updateHeatMapData();
-        drawMeasurementPoints();
+        //drawMeasurementPoints();
     }
 
     public void drawMeasurementPoints() {
