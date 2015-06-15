@@ -13,12 +13,33 @@ application.factory('Measurement', function($resource) {
       url: '/measurement/signal',
       method: 'GET',
       isArray: true
+    },
+    getMeasurements: {
+      url: '/measurement',
+      method: 'GET',
+      isArray: true
     }
   });
 });
 
 application.controller('MapController', function($scope, $http, Measurement) {
   var dataPoints = [];
+
+  var icons = {
+    blue: {
+      type: 'div',
+      iconSize: [10, 10],
+      className: 'blue',
+      iconAnchor: [5, 5]
+    },
+    red: {
+      type: 'div',
+      iconSize: [10, 10],
+      className: 'red',
+      iconAnchor: [5, 5]
+    }
+  };
+
   angular.extend($scope, {
     measurement: {
       type: 'EDGE',
@@ -83,10 +104,31 @@ application.controller('MapController', function($scope, $http, Measurement) {
       layerOptions: {
         size: 250
       }
+    },
+    measurements: {
+      name: 'Measurement',
+      type: 'group',
+      visible: true
     }
   };
 
   var reloadData = function() {
+    Measurement.getMeasurements({
+      'nelat': $scope.bounds.northEast.lat,
+      'nelng': $scope.bounds.northEast.lng,
+      'swlat': $scope.bounds.southWest.lat,
+      'swlng': $scope.bounds.southWest.lng
+    }, function(data) {
+      angular.forEach(data, function(item) {
+        $scope.markers[item.location.coordinates.join('+')] = {
+          layer: 'measurements',
+          lat: item.location.coordinates[0],
+          lng: item.location.coordinates[1],
+          icon: icons.red,
+          message: 'Signal: ' + (item.signalDBm * 2 -113) + 'DBm <br/>Standard: ' + item.type + '<br/>Wifi APs: ' + item.wifiAPs
+        };
+      });
+    });
     if ($scope.cellular) {
       Measurement.getSignalPoints({
         'nelat': $scope.bounds.northEast.lat,

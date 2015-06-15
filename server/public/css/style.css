@@ -6555,3 +6555,9 @@ button.close {
   top: 10px;
   right: 10px;
 }
+
+.red {
+  border-radius: 120px;
+  opacity: .5;
+  background-color: #5F9F9F;
+}
