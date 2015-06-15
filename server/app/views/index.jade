@@ -2,6 +2,9 @@ extends layout
 
 block content
   div.row(ng-controller='MapController')
+    .col-md-9
+      .well
+        leaflet(layers='layers', center='center', width='100%', height='600', event-broadcast='events',  markers='markers', bounds='bounds')
     .col-md-3
       .panel.panel-success
         .panel-heading Add Measurement
@@ -37,10 +40,4 @@ block content
                 label
                   input(type='checkbox', name='selectedTypes[]', ng-checked='filterSelection.indexOf(type) > -1', ng-click='toggleFilterSelection(type)')
                   | {{type}}
-
-          
-
-    .col-md-9
-      .well
-        leaflet(layers='layers', center='center', width='100%', height='600', event-broadcast='events',  markers='markers', bounds='bounds')
 
