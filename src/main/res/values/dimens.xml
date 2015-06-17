@@ -2,4 +2,5 @@
 <resources>
     <dimen name="navigation_drawer_width">240dp</dimen>
     <dimen name="drawer_height">68dp</dimen>
+    <dimen name="elevation">5dp</dimen>
 </resources>
